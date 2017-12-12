@@ -3,7 +3,7 @@ Implementation a binary search tree in JavaScript
 
 I am just starting to learn JavaScript and figured a good way to familarize myself with the new language was to make something similar to what I have made in the past with C++ (language I have the most experience with)
 
-A binary search tree is actually pretty similar to a sorted linked list in many ways, but has many more cases to consider.
+A binary search tree is actually pretty similar to a sorted linked list in many ways but has many more cases to consider, especially when removing a node. Although I have seen it done the other way, I am writing my removal algorithm such that if the node to be deleted has two child nodes, the node to be deleted is replaced by the minimimum of its right subtree.
 
 For the sake of simplicity, I am only considering the case where all values in the tree are **numbers**.
 
