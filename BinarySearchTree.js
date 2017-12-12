@@ -135,6 +135,49 @@ function BST(){
       return searchInfo;
     }
   }
+
+  function doRemove(input){
+    /*
+    for a removing a node from a BST we must consider all three cases:
+      1. The node we are deleting has no child nodes
+      2. The node we are deleting has a single child node
+      3. The node we are deleting has two child nodes
+    */
+    if(root.value!=null){
+      //there are things in the tree
+      var search=doSearch(input)
+      if(search.found==true){
+        //value is in the tree
+        if(search.tmp.leftChild==null && search.tmp.rightChild==null){
+          //Case 1: node has no child nodes
+          if(search.tmp==root){
+            //special case of deleting last node from tree
+            root=bstNode();
+          }
+          else{
+            if(search.tmp.value<search.parent.value){
+              //node to delete is left child
+              search.parent.setLeftChild(null);
+              search.tmp.setParent(null);
+            }
+            else{
+              //node to be deleted is right child
+              search.parent.setRightChild(null);
+              search.tmp.setParent(null);
+            }
+          }
+        }
+      }
+      else{
+        console.log(input+" is not in the tree");
+      }
+
+    }
+    else{
+      console.log("tree is empty, cannot remove anything")
+    }
+  }
+
   function printInorder(){
     /*
     for printing inorder nodes are visited as:
@@ -225,7 +268,9 @@ function BST(){
   var treeAPI={
     insert:doInsert,
     print:printInorder,  //print in order by default
-    changePrint:changePrint
+    changePrint:changePrint,
+    search:doSearch,
+    remove:doRemove
   };
   return treeAPI;
 }
@@ -246,9 +291,15 @@ tree.insert(4); //4 is already in the tree
 tree.insert(2); //2 is already in the tree
 tree.insert(6); //6 is already in the tree
 tree.print();   //1 2 3 4 5 6 7
-
+/*
 //testing other prints:
 tree.changePrint("pre");
 //tree.print(); //4 2 1 3 6 5 7
 tree.changePrint("post");
 //tree.print(); //1 3 2 5 7 6 4
+*/
+//testing removing nodes w/ no children
+tree.remove(8); //8 is not in the tree
+tree.remove(1);
+tree.remove(7);
+tree.print(); //2 3 4 5 6
