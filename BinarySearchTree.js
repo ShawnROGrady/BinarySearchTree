@@ -19,7 +19,7 @@
 
 +I currently believe I can:
   -insert values
-  -print the tree inorder
+  -print the tree inorder, preorder and postorder
 */
 
 "use strict";
@@ -120,7 +120,7 @@ function BST(){
     }
   }
   function doPrintInorder(node){
-    //this function actually does the printing
+    //this function actually does the inorder printing
     if(node.leftChild!=null){
       doPrintInorder(node.leftChild);
     }
@@ -130,9 +130,72 @@ function BST(){
     }
   }
 
+  function printPreorder(){
+    /*
+    for preorder printing nodes are visited as:
+      i) parent
+      ii) left
+      iii) right
+    */
+    if(root.value==null){
+      console.log("tree is empty");
+    }else{
+      doPrintPreorder(root);
+    }
+  }
+  function doPrintPreorder(node){
+    //this function actually does the preorder printing
+    console.log(node.value);
+    if(node.leftChild!=null){
+      doPrintPreorder(node.leftChild);
+    }
+    if(node.rightChild!=null){
+      doPrintPreorder(node.rightChild);
+    }
+  }
+
+  function printPostorder(){
+    /*
+    for preorder printing nodes are visited as:
+      i) left
+      ii) right
+      iii) parent
+    */
+    if(root.value==null){
+      console.log("tree is empty");
+    }else{
+      doPrintPostorder(root);
+    }
+  }
+  function doPrintPostorder(node){
+    //this function actually does the postorder printing
+    if(node.leftChild!=null){
+      doPrintPostorder(node.leftChild);
+    }
+    if(node.rightChild!=null){
+      doPrintPostorder(node.rightChild);
+    }
+    console.log(node.value);
+  }
+
+  function changePrint(direction){
+    if(direction=="in"||direction=="In"){
+      treeAPI.print=printInorder;
+    }
+    else if(direction=="pre"||direction=="Pre"){
+      treeAPI.print=printPreorder;
+    }
+    else if(direction=="post"||direction=="Post"){
+      treeAPI.print=printPostorder;
+    }
+    else{
+      alert("invalid input");
+    }
+  }
   var treeAPI={
     insert:doInsert,
-    print:printInorder  //print in order by default
+    print:printInorder,  //print in order by default
+    changePrint:changePrint
   };
   return treeAPI;
 }
@@ -149,4 +212,10 @@ tree.insert(1);
 tree.insert(3);
 tree.insert(5);
 tree.insert(7);
-tree.print();   //1 2 3 4 5 6 7
+//tree.print();   //1 2 3 4 5 6 7
+
+//testing other prints:
+tree.changePrint("pre");
+//tree.print(); //4 2 1 3 6 5 7
+tree.changePrint("post");
+tree.print(); //1 3 2 5 7 6 4
