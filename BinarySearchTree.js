@@ -68,43 +68,73 @@ function BST(){
     else{
       var tmp=root;
       var parent=root;
-      while(true){
-        if(input<tmp.value){
-          if(tmp.leftChild!=null){
-            tmp=tmp.leftChild;
-          }
-          else{
-            break;
-          }
-        }
-        else{
-          if(tmp.rightChild!=null){
-            tmp=tmp.rightChild;
-          }
-          else{
-            break;
-          }
-        }
-      }
-      if(input<tmp.value){
-        leftInsert(newNode, tmp);
-        console.log(input+" was added to the tree as the left child to "+ tmp.value);
+      var search=doSearch(input);
+      if(search.found==true){
+        //value already in tree
+        console.log(input + " is already in the tree");
       }
       else{
-        rightInsert(newNode, tmp);
-        console.log(input+" was added to the tree as the right child to "+ tmp.value);
+        if(input<search.tmp.value){
+          leftInsert(newNode, search.tmp);
+        }
+        else{
+          rightInsert(newNode, search.tmp);
+        }
       }
     }
   }
   function leftInsert(newNode, parentNode){
     parentNode.setLeftChild(newNode);
     newNode.setParent(parentNode);
+    console.log(newNode.value+" was added to the tree as the left child to "+ parentNode.value);
   }
   function rightInsert(newNode, parentNode){
     parentNode.setRightChild(newNode);
     newNode.setParent(parentNode);
+    console.log(newNode.value+" was added to the tree as the right child to "+ parentNode.value);
   }
 
+  function doSearch(input){
+    //since this function is going to be to help insert+remove, it will be easier to make it iterative instead of recursive
+    var found=false;
+    var tmp=root;
+    var parent=tmp;
+    if(root.value!=null){
+      while(true){
+        if(input<tmp.value){
+          if(tmp.leftChild!=null){
+            parent=tmp;
+            tmp=tmp.leftChild;
+          }
+          else{
+            break;
+          }
+        }
+        else if(input>tmp.value){
+          if(tmp.rightChild!=null){
+            parent=tmp;
+            tmp=tmp.rightChild;
+          }
+          else{
+            //tmp has the value we searched for
+            break;
+          }
+        }
+        else{
+          //found it
+          found=true;
+          break;
+        }
+      }
+      //now, tmp is either the node holding the value we searched for, or is the node that would be that value's parent
+      var searchInfo={
+        found:found,
+        tmp:tmp,
+        parent:parent
+      };
+      return searchInfo;
+    }
+  }
   function printInorder(){
     /*
     for printing inorder nodes are visited as:
@@ -212,10 +242,13 @@ tree.insert(1);
 tree.insert(3);
 tree.insert(5);
 tree.insert(7);
-//tree.print();   //1 2 3 4 5 6 7
+tree.insert(4); //4 is already in the tree
+tree.insert(2); //2 is already in the tree
+tree.insert(6); //6 is already in the tree
+tree.print();   //1 2 3 4 5 6 7
 
 //testing other prints:
 tree.changePrint("pre");
 //tree.print(); //4 2 1 3 6 5 7
 tree.changePrint("post");
-tree.print(); //1 3 2 5 7 6 4
+//tree.print(); //1 3 2 5 7 6 4
