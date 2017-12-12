@@ -167,6 +167,36 @@ function BST(){
             }
           }
         }
+        else if(search.tmp.leftChild!=null && search.tmp.rightChild==null){
+          //Case 2(a): node only has left child node
+          if(search.tmp.value<search.parent.value){
+            //node to delete is left child
+            search.parent.setLeftChild(search.tmp.leftChild);
+            search.tmp.setParent(null);
+            search.tmp.leftChild.setParent(search.parent);
+          }
+          else{
+            //node to be deleted is right child
+            search.parent.setRightChild(search.tmp.leftChild);
+            search.tmp.setParent(null);
+            search.tmp.leftChild.setParent(search.parent);
+          }
+        }
+        else if(search.tmp.leftChild==null && search.tmp.rightChild!=null){
+          //Case 2(b): node only has right child node
+          if(search.tmp.value<search.parent.value){
+            //node to delete is left child
+            search.parent.setLeftChild(search.tmp.rightChild);
+            search.tmp.setParent(null);
+            search.tmp.rightChild.setParent(search.parent);
+          }
+          else{
+            //node to be deleted is right child
+            search.parent.setRightChild(search.tmp.rightChild);
+            search.tmp.setParent(null);
+            search.tmp.rightChild.setParent(search.parent);
+          }
+        }
       }
       else{
         console.log(input+" is not in the tree");
@@ -302,4 +332,9 @@ tree.changePrint("post");
 tree.remove(8); //8 is not in the tree
 tree.remove(1);
 tree.remove(7);
-tree.print(); //2 3 4 5 6
+//tree.print(); //2 3 4 5 6
+
+//removing nodes w/ one child
+tree.remove(3);
+tree.remove(5);
+tree.print(); //2 4 6
