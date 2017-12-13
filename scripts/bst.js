@@ -39,7 +39,7 @@ export function BST(){
     if(root.value==null){
       //list is empty
       root=newNode;
-      alert(input+" was added to the tree as the root");
+      return(input+" was added to the tree as the root");
     }
     else{
       var tmp=root;
@@ -51,10 +51,10 @@ export function BST(){
       }
       else{
         if(input<search.tmp.value){
-          leftInsert(newNode, search.tmp);
+          return leftInsert(newNode, search.tmp);
         }
         else{
-          rightInsert(newNode, search.tmp);
+          return rightInsert(newNode, search.tmp);
         }
       }
     }
@@ -62,12 +62,12 @@ export function BST(){
   function leftInsert(newNode, parentNode){
     parentNode.setLeftChild(newNode);
     newNode.setParent(parentNode);
-    alert(newNode.value+" was added to the tree as the left child to "+ parentNode.value);
+    return(newNode.value+" was added to the tree as the left child to "+ parentNode.value);
   }
   function rightInsert(newNode, parentNode){
     parentNode.setRightChild(newNode);
     newNode.setParent(parentNode);
-    alert(newNode.value+" was added to the tree as the right child to "+ parentNode.value);
+    return(newNode.value+" was added to the tree as the right child to "+ parentNode.value);
   }
 
   function doSearch(input){
