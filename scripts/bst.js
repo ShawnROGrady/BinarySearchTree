@@ -77,44 +77,56 @@ export function BST(){
 
   function doSearch(input){
     //since this function is going to be to help insert+remove, it will be easier to make it iterative instead of recursive
-    var found=false;
-    var tmp=root;
-    var parent=tmp;
-    if(root.value!=null){
-      while(true){
-        if(input<tmp.value){
-          if(tmp.leftChild!=null){
-            parent=tmp;
-            tmp=tmp.leftChild;
-          }
-          else{
-            break;
-          }
-        }
-        else if(input>tmp.value){
-          if(tmp.rightChild!=null){
-            parent=tmp;
-            tmp=tmp.rightChild;
-          }
-          else{
-            //tmp has the value we searched for
-            break;
-          }
-        }
-        else{
-          //found it
-          found=true;
-          break;
-        }
-      }
-      //now, tmp is either the node holding the value we searched for, or is the node that would be that value's parent
-      var searchInfo={
-        found:found,
-        tmp:tmp,
-        parent:parent
-      };
-      return searchInfo;
+    if(isNaN(input)){
+      alert("please enter a numeric value");
     }
+    else{
+      var found=false;
+      var tmp=root;
+      var parent=tmp;
+
+      if(root.value!=null){
+        while(true){
+          if(input<tmp.value){
+            if(tmp.leftChild!=null){
+              parent=tmp;
+              tmp=tmp.leftChild;
+            }
+            else{
+              break;
+            }
+          }
+          else if(input>tmp.value){
+            if(tmp.rightChild!=null){
+              parent=tmp;
+              tmp=tmp.rightChild;
+            }
+            else{
+              //tmp has the value we searched for
+              break;
+            }
+          }
+          else{
+            //found it
+            found=true;
+            break;
+          }
+        }
+        //now, tmp is either the node holding the value we searched for, or is the node that would be that value's parent
+
+        var searchInfo={
+          found:found,
+          tmp:tmp,
+          parent:parent
+        };
+        
+        return searchInfo;
+      }
+      else{
+        alert("tree is empty, cannot search for a value");
+      }
+    }
+
   }
 
   function doRemove(input){
@@ -124,45 +136,50 @@ export function BST(){
       2. The node we are deleting has a single child node
       3. The node we are deleting has two child nodes
     */
-    if(root.value!=null){
-      //there are things in the tree
-      var search=doSearch(input)
-      if(search.found==true){
-        //value is in the tree
-        if(search.tmp.leftChild==null && search.tmp.rightChild==null){
-          //Case 1: node has no child nodes
-          removeNoChild(search.tmp, search.parent);
-        }
-        else if(search.tmp.leftChild!=null && search.tmp.rightChild==null){
-          //Case 2(a): node only has left child node
-          removeLeftChild(search.tmp, search.parent);
-        }
-        else if(search.tmp.leftChild==null && search.tmp.rightChild!=null){
-          //Case 2(b): node only has right child node
-          removeRightChild(search.tmp, search.parent);
-        }
-        else{
-          //Case 3: parent has two children
-          var subTreeMin=findSubTreeMin(search.tmp.rightChild);
-          removeTwoChild(search.tmp, subTreeMin.value); //set nodes value to that of its right subtree's minimum
-          //delete node w/ right subtree's minimum
-          if(subTreeMin.rightChild==null){
-            removeNoChild(subTreeMin, subTreeMin.parent);
-          }
-          else{
-            removeRightChild(subTreeMin, subTreeMin.parent);
-          }
-
-        }
-        alert(input+ " has been removed from the tree");
-      }
-      else{
-        alert(input+" is not in the tree");
-      }
-
+    if(isNaN(input)){
+      alert("please enter a numeric value");
     }
     else{
-      alert("tree is empty, cannot remove anything")
+      if(root.value!=null){
+        //there are things in the tree
+        var search=doSearch(input)
+        if(search.found==true){
+          //value is in the tree
+          if(search.tmp.leftChild==null && search.tmp.rightChild==null){
+            //Case 1: node has no child nodes
+            removeNoChild(search.tmp, search.parent);
+          }
+          else if(search.tmp.leftChild!=null && search.tmp.rightChild==null){
+            //Case 2(a): node only has left child node
+            removeLeftChild(search.tmp, search.parent);
+          }
+          else if(search.tmp.leftChild==null && search.tmp.rightChild!=null){
+            //Case 2(b): node only has right child node
+            removeRightChild(search.tmp, search.parent);
+          }
+          else{
+            //Case 3: parent has two children
+            var subTreeMin=findSubTreeMin(search.tmp.rightChild);
+            removeTwoChild(search.tmp, subTreeMin.value); //set nodes value to that of its right subtree's minimum
+            //delete node w/ right subtree's minimum
+            if(subTreeMin.rightChild==null){
+              removeNoChild(subTreeMin, subTreeMin.parent);
+            }
+            else{
+              removeRightChild(subTreeMin, subTreeMin.parent);
+            }
+
+          }
+          return (input+ " has been removed from the tree");
+        }
+        else{
+          alert(input+" is not in the tree");
+        }
+
+      }
+      else{
+        alert("tree is empty, cannot remove anything")
+      }
     }
   }
 
