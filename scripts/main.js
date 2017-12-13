@@ -13,9 +13,15 @@
 import {BST} from "./bst.js";
 
 var tree= BST();  //the binary search tree
+var form=document.getElementById('mainForm'); //the main form on the webpage
 
 //the various buttons:
 var startButton=document.getElementById('start');
+var insertButton=document.getElementById("insertEnter");
+var removeButton=document.getElementById("removeEnter");
+var searchButton=document.getElementById("searchEnter");
+var printButton=document.getElementById("printEnter");
+var terminateButton=document.getElementById("terminateEnter");
 
 startButton.onclick=function(){
   startButton.style.display="none";
@@ -23,4 +29,10 @@ startButton.onclick=function(){
   document.getElementById("welcome").style.display="none"; //hide program info
   document.querySelector('ol').style.display="none";
   document.getElementById('mainForm').style.visibility='visible';
+}
+
+insertButton.onclick=function(){
+  var userInput=form.elements[0].value;
+  tree.insert(Number(userInput));
+  form.elements[0].value=""; //clear form
 }
