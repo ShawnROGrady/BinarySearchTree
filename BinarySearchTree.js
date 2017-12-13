@@ -150,52 +150,15 @@ function BST(){
         //value is in the tree
         if(search.tmp.leftChild==null && search.tmp.rightChild==null){
           //Case 1: node has no child nodes
-          if(search.tmp==root){
-            //special case of deleting last node from tree
-            root=bstNode();
-          }
-          else{
-            if(search.tmp.value<search.parent.value){
-              //node to delete is left child
-              search.parent.setLeftChild(null);
-              search.tmp.setParent(null);
-            }
-            else{
-              //node to be deleted is right child
-              search.parent.setRightChild(null);
-              search.tmp.setParent(null);
-            }
-          }
+          removeNoChild(search.tmp, search.parent);
         }
         else if(search.tmp.leftChild!=null && search.tmp.rightChild==null){
           //Case 2(a): node only has left child node
-          if(search.tmp.value<search.parent.value){
-            //node to delete is left child
-            search.parent.setLeftChild(search.tmp.leftChild);
-            search.tmp.setParent(null);
-            search.tmp.leftChild.setParent(search.parent);
-          }
-          else{
-            //node to be deleted is right child
-            search.parent.setRightChild(search.tmp.leftChild);
-            search.tmp.setParent(null);
-            search.tmp.leftChild.setParent(search.parent);
-          }
+          removeLeftChild(search.tmp, search.parent);
         }
         else if(search.tmp.leftChild==null && search.tmp.rightChild!=null){
           //Case 2(b): node only has right child node
-          if(search.tmp.value<search.parent.value){
-            //node to delete is left child
-            search.parent.setLeftChild(search.tmp.rightChild);
-            search.tmp.setParent(null);
-            search.tmp.rightChild.setParent(search.parent);
-          }
-          else{
-            //node to be deleted is right child
-            search.parent.setRightChild(search.tmp.rightChild);
-            search.tmp.setParent(null);
-            search.tmp.rightChild.setParent(search.parent);
-          }
+          removeRightChild(search.tmp, search.parent);
         }
       }
       else{
@@ -205,6 +168,73 @@ function BST(){
     }
     else{
       console.log("tree is empty, cannot remove anything")
+    }
+  }
+
+  function removeNoChild(tmp, parent){
+    if(tmp==root){
+      //special case of deleting last node from tree
+      root=bstNode();
+    }
+    else{
+      if(tmp.value<parent.value){
+        //node to delete is left child
+        parent.setLeftChild(null);
+        tmp.setParent(null);
+      }
+      else{
+        //node to be deleted is right child
+        parent.setRightChild(null);
+        tmp.setParent(null);
+      }
+    }
+    console.log(tmp.value+" has been removed from the tree");
+  }
+  function removeLeftChild(tmp, parent){
+    if(tmp.value<parent.value){
+      //node to delete is left child
+      parent.setLeftChild(tmp.leftChild);
+      tmp.setParent(null);
+      tmp.leftChild.setParent(parent);
+      if(tmp==root){
+        //need to readjust if deleting the root
+        root=tmp.leftChild;
+      }
+      console.log(tmp.value+" has been removed from the tree");
+    }
+    else{
+      //node to be deleted is right child
+      parent.setRightChild(tmp.leftChild);
+      tmp.setParent(null);
+      tmp.leftChild.setParent(parent);
+      if(tmp==root){
+        //need to readjust if deleting the root
+        root=tmp.rightChild;
+      }
+    }
+    console.log(tmp.value+" has been removed from the tree");
+  }
+
+  function removeRightChild(tmp, parent){
+    if(tmp.value<parent.value){
+      //node to delete is left child
+      parent.setLeftChild(tmp.rightChild);
+      tmp.setParent(null);
+      tmp.rightChild.setParent(parent);
+      if(tmp==root){
+        //need to readjust if deleting the root
+        root=tmp.leftChild;
+      }
+    }
+    else{
+      //node to be deleted is right child
+      parent.setRightChild(tmp.rightChild);
+      tmp.setParent(null);
+      tmp.rightChild.setParent(parent);
+      if(tmp==root){
+        //need to readjust if deleting the root
+        root=tmp.rightChild;
+      }
     }
   }
 
@@ -337,4 +367,9 @@ tree.remove(7);
 //removing nodes w/ one child
 tree.remove(3);
 tree.remove(5);
-tree.print(); //2 4 6
+//tree.print(); //2 4 6
+tree.remove(6);
+tree.remove(4);
+tree.remove(2);
+
+tree.print(); //tree is empty
