@@ -76,20 +76,20 @@ printButton.onclick=function(){
   if(print.elements[0].checked){
     //inorder button pressed
     tree.changePrint("in");
-    //listContents=list.print();
-    tree.print();
+    treeContents=tree.print();
+    lastAction.innerHTML=treeContents;
   }
   else if(print.elements[1].checked){
     //preorder button pressed
     tree.changePrint("pre");
-    //listContents=list.print();
-    tree.print();
+    treeContents=tree.print();
+    lastAction.innerHTML=treeContents;
   }
   else if(print.elements[2].checked){
     //postorder button pressed
     tree.changePrint("post");
-    //listContents=list.print();
-    tree.print();
+    treeContents=tree.print();
+    lastAction.innerHTML=treeContents;
   }
   else{
     //user did not press either button
