@@ -22,6 +22,7 @@
   -print the tree inorder, preorder and postorder
   -search for a value
   -remove a value
+  -all from user input
 */
 
 "use strict";
@@ -65,7 +66,7 @@ function BST(){
     if(root.value==null){
       //list is empty
       root=newNode;
-      console.log(input+" was added to the tree as the root");
+      alert(input+" was added to the tree as the root");
     }
     else{
       var tmp=root;
@@ -73,7 +74,7 @@ function BST(){
       var search=doSearch(input);
       if(search.found==true){
         //value already in tree
-        console.log(input + " is already in the tree");
+        alert(input + " is already in the tree");
       }
       else{
         if(input<search.tmp.value){
@@ -88,12 +89,12 @@ function BST(){
   function leftInsert(newNode, parentNode){
     parentNode.setLeftChild(newNode);
     newNode.setParent(parentNode);
-    console.log(newNode.value+" was added to the tree as the left child to "+ parentNode.value);
+    alert(newNode.value+" was added to the tree as the left child to "+ parentNode.value);
   }
   function rightInsert(newNode, parentNode){
     parentNode.setRightChild(newNode);
     newNode.setParent(parentNode);
-    console.log(newNode.value+" was added to the tree as the right child to "+ parentNode.value);
+    alert(newNode.value+" was added to the tree as the right child to "+ parentNode.value);
   }
 
   function doSearch(input){
@@ -175,15 +176,15 @@ function BST(){
           }
 
         }
-        console.log(input+ " has been removed from the tree");
+        alert(input+ " has been removed from the tree");
       }
       else{
-        console.log(input+" is not in the tree");
+        alert(input+" is not in the tree");
       }
 
     }
     else{
-      console.log("tree is empty, cannot remove anything")
+      alert("tree is empty, cannot remove anything")
     }
   }
 
@@ -276,20 +277,25 @@ function BST(){
     This is also the sorted order
     */
     if(root.value==null){
-      console.log("tree is empty")
+      alert("tree is empty")
     }else{
-      doPrintInorder(root);
+      var treeString="";
+      treeString="tree contains(in-order):\r"+treeString+doPrintInorder(root, treeString);
+      alert(treeString);
     }
   }
-  function doPrintInorder(node){
+  function doPrintInorder(node, treeString){
     //this function actually does the inorder printing
+    //var inorderString=treeString;
     if(node.leftChild!=null){
-      doPrintInorder(node.leftChild);
+      treeString=doPrintInorder(node.leftChild, treeString);
     }
-    console.log(node.value);
+    //alert(node.value);
+    treeString=treeString+node.value+"\r";
     if(node.rightChild!=null){
-      doPrintInorder(node.rightChild);
+      treeString=doPrintInorder(node.rightChild, treeString);
     }
+    return treeString;
   }
 
   function printPreorder(){
@@ -300,20 +306,25 @@ function BST(){
       iii) right
     */
     if(root.value==null){
-      console.log("tree is empty");
+      alert("tree is empty");
     }else{
-      doPrintPreorder(root);
+      var treeString="";
+      treeString="tree contains(pre-order):\r"+treeString+doPrintPreorder(root, treeString);
+      alert(treeString);
     }
   }
-  function doPrintPreorder(node){
+  function doPrintPreorder(node,treeString){
     //this function actually does the preorder printing
-    console.log(node.value);
+    //alert(node.value);
+    //treeString=treeString+node.value+"\r";
+    treeString=treeString+node.value+"\r";
     if(node.leftChild!=null){
-      doPrintPreorder(node.leftChild);
+      treeString=doPrintPreorder(node.leftChild, treeString);
     }
     if(node.rightChild!=null){
-      doPrintPreorder(node.rightChild);
+      treeString=doPrintPreorder(node.rightChild, treeString);
     }
+    return treeString;
   }
 
   function printPostorder(){
@@ -324,20 +335,23 @@ function BST(){
       iii) parent
     */
     if(root.value==null){
-      console.log("tree is empty");
+      alert("tree is empty");
     }else{
-      doPrintPostorder(root);
+      var treeString="";
+      treeString="tree contains(post-order):\r"+treeString+doPrintPostorder(root, treeString);
+      alert(treeString);
     }
   }
-  function doPrintPostorder(node){
+  function doPrintPostorder(node, treeString){
     //this function actually does the postorder printing
     if(node.leftChild!=null){
-      doPrintPostorder(node.leftChild);
+      treeString=doPrintPostorder(node.leftChild, treeString);
     }
     if(node.rightChild!=null){
-      doPrintPostorder(node.rightChild);
+      treeString=doPrintPostorder(node.rightChild, treeString);
     }
-    console.log(node.value);
+    treeString=treeString+node.value+"\r";
+    return treeString;
   }
 
   function changePrint(direction){
@@ -364,6 +378,53 @@ function BST(){
   return treeAPI;
 }
 
+//main function:
+(function main(){
+  var tree=BST();
+  var choice;
+  var userInput
+  do{
+    choice=prompt("What would you like to do? \r 1. insert a value to the tree \r 2. remove a value from the tree \r 3. print the tree \r 4. search the tree \r 5. terminate program");
+    if(choice==1){
+      //insert value
+      userInput=prompt("enter a value to add to the tree");
+      tree.insert(Number(userInput));
+    }
+    else if(choice==2){
+      //remove a value
+      userInput=prompt("enter a value to remove from the tree");
+      tree.remove(Number(userInput));
+    }
+    else if(choice==3){
+      //print list
+      var dir=prompt("how do you wish to print (\"in\", \"pre\" or \"post\")?");
+      tree.changePrint(dir);
+      tree.print();
+    }
+    else if(choice==4){
+      //search the list
+      userInput=prompt("enter a value to search for");
+      if(tree.search(Number(userInput)).found){
+        //value was in list
+        alert(userInput+" is in the list");
+      }else{
+        //not in list
+        alert(userInput+" is not in the list");
+      }
+    }
+    else if(choice==5||choice==null){
+      //close program
+      alert("thank you for using this program");
+    }
+    else{
+      //invalid choice
+      alert("please enter a valid choice");
+
+    }
+  }while(choice!=5 && choice!=null);
+
+})();
+/*
 //testing basic functionality
 var tree=BST();
 tree.print();   //"tree is empty"
@@ -380,13 +441,13 @@ tree.insert(4); //4 is already in the tree
 tree.insert(2); //2 is already in the tree
 tree.insert(6); //6 is already in the tree
 //tree.print();   //1 2 3 4 5 6 7
-/*
+
 //testing other prints:
 tree.changePrint("pre");
 //tree.print(); //4 2 1 3 6 5 7
 tree.changePrint("post");
 //tree.print(); //1 3 2 5 7 6 4
-*/
+
 //testing removing nodes w/ no children
 tree.remove(8); //8 is not in the tree
 tree.remove(1);
@@ -425,3 +486,4 @@ tree.remove(10);
 //tree.print(); //3 5 8 9 14
 tree.changePrint("pre");
 tree.print(); //14 8 5 3 9
+*/
