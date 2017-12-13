@@ -34,27 +34,32 @@ export function BST(){
   var root=bstNode();
 
   function doInsert(input){
-    var newNode=bstNode();
-    newNode.setValue(input);
-    if(root.value==null){
-      //list is empty
-      root=newNode;
-      return(input+" was added to the tree as the root");
+    if(isNaN(input)){
+      alert("only numeric values are allowed in the tree");
     }
     else{
-      var tmp=root;
-      var parent=root;
-      var search=doSearch(input);
-      if(search.found==true){
-        //value already in tree
-        alert(input + " is already in the tree");
+      var newNode=bstNode();
+      newNode.setValue(input);
+      if(root.value==null){
+        //list is empty
+        root=newNode;
+        return(input+" was added to the tree as the root");
       }
       else{
-        if(input<search.tmp.value){
-          return leftInsert(newNode, search.tmp);
+        var tmp=root;
+        var parent=root;
+        var search=doSearch(input);
+        if(search.found==true){
+          //value already in tree
+          alert(input + " is already in the tree");
         }
         else{
-          return rightInsert(newNode, search.tmp);
+          if(input<search.tmp.value){
+            return leftInsert(newNode, search.tmp);
+          }
+          else{
+            return rightInsert(newNode, search.tmp);
+          }
         }
       }
     }
