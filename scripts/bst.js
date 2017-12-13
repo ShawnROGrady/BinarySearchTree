@@ -1,31 +1,4 @@
-//Code By Shawn O'Grady
-
-/*
-+In trying to learn JS I am trying to implement some common data structures
-
-+This is my attempt at a binary search tree
-+Values in the tree will be of number type
-  -just so sorting makes sense
-+No duplicate values allowed for now
-
-+When removing a node with two children, the node will be replaced with the minimum value of its right subtree
-
-+End goal is to have user enter prompts (in main function) in order to perform the following functions:
-  1. insert a value to the tree
-  2. remove a value from the tree
-  3. print the entire tree (inorder, preorder, or postorder)
-  4. search the tree for a specified value
-  5. close the program
-
-+I currently believe I can:
-  -insert values
-  -print the tree inorder, preorder and postorder
-  -search for a value
-  -remove a value
-  -all from user input
-*/
-
-"use strict";
+//all code by Shawn O'Grady
 
 //Node for Binary Search Tree
 function bstNode(){
@@ -57,7 +30,7 @@ function bstNode(){
 }
 
 //Binary search Tree
-function BST(){
+export function BST(){
   var root=bstNode();
 
   function doInsert(input){
@@ -377,113 +350,3 @@ function BST(){
   };
   return treeAPI;
 }
-
-//main function:
-(function main(){
-  var tree=BST();
-  var choice;
-  var userInput
-  do{
-    choice=prompt("What would you like to do? \r 1. insert a value to the tree \r 2. remove a value from the tree \r 3. print the tree \r 4. search the tree \r 5. terminate program");
-    if(choice==1){
-      //insert value
-      userInput=prompt("enter a value to add to the tree");
-      tree.insert(Number(userInput));
-    }
-    else if(choice==2){
-      //remove a value
-      userInput=prompt("enter a value to remove from the tree");
-      tree.remove(Number(userInput));
-    }
-    else if(choice==3){
-      //print list
-      var dir=prompt("how do you wish to print (\"in\", \"pre\" or \"post\")?");
-      tree.changePrint(dir);
-      tree.print();
-    }
-    else if(choice==4){
-      //search the list
-      userInput=prompt("enter a value to search for");
-      if(tree.search(Number(userInput)).found){
-        //value was in list
-        alert(userInput+" is in the list");
-      }else{
-        //not in list
-        alert(userInput+" is not in the list");
-      }
-    }
-    else if(choice==5||choice==null){
-      //close program
-      alert("thank you for using this program");
-    }
-    else{
-      //invalid choice
-      alert("please enter a valid choice");
-
-    }
-  }while(choice!=5 && choice!=null);
-
-})();
-/*
-//testing basic functionality
-var tree=BST();
-tree.print();   //"tree is empty"
-tree.insert(4); //new root
-tree.insert(2); //leftchild to root
-tree.insert(6); //rightChild to root
-
-//ading more nodes:
-tree.insert(1);
-tree.insert(3);
-tree.insert(5);
-tree.insert(7);
-tree.insert(4); //4 is already in the tree
-tree.insert(2); //2 is already in the tree
-tree.insert(6); //6 is already in the tree
-//tree.print();   //1 2 3 4 5 6 7
-
-//testing other prints:
-tree.changePrint("pre");
-//tree.print(); //4 2 1 3 6 5 7
-tree.changePrint("post");
-//tree.print(); //1 3 2 5 7 6 4
-
-//testing removing nodes w/ no children
-tree.remove(8); //8 is not in the tree
-tree.remove(1);
-tree.remove(7);
-//tree.print(); //2 3 4 5 6
-
-//removing nodes w/ one child
-tree.remove(2);
-tree.remove(6);
-tree.print(); //3 4 5
-tree.remove(5);
-tree.remove(4);
-tree.remove(3);
-//tree.print(); //tree is empty
-
-//populating new tree:
-tree.insert(10);
-tree.insert(14);
-tree.insert(6);
-tree.insert(4);
-tree.insert(8);
-tree.insert(3);
-tree.insert(5);
-tree.insert(7);
-tree.insert(9);
-tree.print(); //3 4 5 6 7 8 9 10 14
-
-//deleting nodes w/ two children
-tree.remove(6);
-tree.remove(4);
-tree.remove(7);
-//tree.print(); //3 5 8 9 10 14
-
-//deleting root node:
-tree.remove(10);
-//tree.print(); //3 5 8 9 14
-tree.changePrint("pre");
-tree.print(); //14 8 5 3 9
-*/

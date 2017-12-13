@@ -18,5 +18,12 @@ This program is intended for personal education, and I plan on updating it as I 
 
 
 Along with this README file, this repository contains:
-  1. a JavaScript file with the entire implementation of the binary search tree (BinarySearchTree.js)
-  2. an html file to run said JavaScript file (BinarySearchTree.html)(I plan to expand on this after I finish implementing all functionality)
+  1. an html file to run JavaScript files and provide forms to take user input
+  2. a folder named scripts which contains the following JavaScript files:
+    * bst.js which contains the implementation of the sorted doubly linked list data structure
+    * main.js which handles all user input
+    * BinarySearchTree.js which is not actually used, but can be easily copy/pasted to the console for testing
+ 
+This program is intended for personal education, and I plan on updating it as I learn more 
+
+I have been testing this program in **Google Chrome(Version 63.0.3239.84)** using a local testing server. Local server was set up using Python's SimpleHTTPServer module. This program makes use of module features added in ES6, so it may not run in older browsers.
