@@ -24,8 +24,29 @@
       </p>
       <h2>Click button below to start</h2>
       <button id="start">Start</button>
-      
+      <form id="mainForm" action="">
+        1. Insert a value to the tree<br>
+        <input type='text'><input type='button'  id='insertEnter' value='insert'>
+        <br><br>
+        2. Remove a value from the tree<br>
+        <input type='text'><input type='button'  id='removeEnter' value='remove'>
+        <br><br>
+        3. Print the tree<br>
+        <input type="radio" name="direction" value="in"> Inorder<br>
+        <input type="radio" name="direction" value="pre"> Preorder<br>
+        <input type="radio" name="direction" value="post"> Postorder<br>
+        <input type='button'  id='printEnter' value='print'><br>
+        <br>
+        4. Search the tree<br>
+        <input type='text'><input type='button'  id='searchEnter' value='search'>
+        <br>
+        <br>
+        5. Terminate the program<br>
+        <input type='button'  id='terminateEnter' value='Terminate'>
+      </form>
+      <script>
+        document.getElementById('mainForm').style.visibility='hidden';
+      </script>
       <script type="module" src="scripts/main.js"></script>
     </body>
 </html>
-
