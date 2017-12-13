@@ -14,6 +14,7 @@ import {BST} from "./bst.js";
 
 var tree= BST();  //the binary search tree
 
+var lastAction=document.getElementById("lastAction");
 //the various buttons:
 var startButton=document.getElementById('start');
 var insertButton=document.getElementById("insertEnter");
@@ -32,13 +33,17 @@ startButton.onclick=function(){
   document.getElementById('printTree').style.display="block";
   document.getElementById('searchNode').style.display="block";
   document.getElementById('terminateProgram').style.display="block";
+  document.querySelector('h3').textContent="Last action:";
 }
 
 insertButton.onclick=function(){
   var insert=document.getElementById('addNode');
   var userInput=insert.elements[0].value;
-  tree.insert(Number(userInput));
   insert.elements[0].value=""; //clear form
+  var action=tree.insert(Number(userInput));
+  if(action!=null){
+    lastAction.textContent=action;  //update last action paragraph
+  }
 }
 removeButton.onclick=function(){
   var remove=document.getElementById('removeNode');
