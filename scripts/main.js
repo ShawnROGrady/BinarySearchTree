@@ -19,7 +19,8 @@ var startButton=document.getElementById('start');
 
 startButton.onclick=function(){
   startButton.style.display="none";
-  document.querySelector('h2').style.display="none"; //hide initial instruction
+  document.querySelector('h2').textContent="Choose from the following:"; //change initial instruction
   document.getElementById("welcome").style.display="none"; //hide program info
   document.querySelector('ol').style.display="none";
+  document.getElementById('mainForm').style.visibility='visible';
 }
