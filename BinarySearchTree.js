@@ -27,7 +27,7 @@
 //Node for Binary Search Tree
 function bstNode(){
   var value;
-  var parent, leftChild, rightChild;  //probably don't need to have parent
+  var parent, leftChild, rightChild;
   var duplicate;  //not used for now
 
   function doSetLeftChild(newNode){
@@ -160,6 +160,20 @@ function BST(){
           //Case 2(b): node only has right child node
           removeRightChild(search.tmp, search.parent);
         }
+        else{
+          //Case 3: parent has two children
+          var subTreeMin=findSubTreeMin(search.tmp.rightChild);
+          removeTwoChild(search.tmp, subTreeMin.value); //set nodes value to that of its right subtree's minimum
+          //delete node w/ right subtree's minimum
+          if(subTreeMin.rightChild==null){
+            removeNoChild(subTreeMin, subTreeMin.parent);
+          }
+          else{
+            removeRightChild(subTreeMin, subTreeMin.parent);
+          }
+
+        }
+        console.log(input+ " has been removed from the tree");
       }
       else{
         console.log(input+" is not in the tree");
@@ -188,7 +202,7 @@ function BST(){
         tmp.setParent(null);
       }
     }
-    console.log(tmp.value+" has been removed from the tree");
+    //console.log(tmp.value+" has been removed from the tree");
   }
   function removeLeftChild(tmp, parent){
     if(tmp.value<parent.value){
@@ -200,7 +214,6 @@ function BST(){
         //need to readjust if deleting the root
         root=tmp.leftChild;
       }
-      console.log(tmp.value+" has been removed from the tree");
     }
     else{
       //node to be deleted is right child
@@ -212,7 +225,7 @@ function BST(){
         root=tmp.rightChild;
       }
     }
-    console.log(tmp.value+" has been removed from the tree");
+    //console.log(tmp.value+" has been removed from the tree");
   }
 
   function removeRightChild(tmp, parent){
@@ -236,6 +249,20 @@ function BST(){
         root=tmp.rightChild;
       }
     }
+    //console.log(tmp.value+" has been removed from the tree");
+  }
+  function removeTwoChild(tmp, rightTreeMin){
+    var tmpValue=tmp.value;
+    tmp.setValue(rightTreeMin);
+    //console.log(tmpValue+" has been removed from the tree");
+  }
+  function findSubTreeMin(node){
+    //this function finds the node of minimum value in the subtree starting with the node passed as an argument
+    while(node.leftChild!=null){
+      node=node.leftChild;
+    }
+    //alert(node.value);
+    return node;
   }
 
   function printInorder(){
@@ -350,7 +377,7 @@ tree.insert(7);
 tree.insert(4); //4 is already in the tree
 tree.insert(2); //2 is already in the tree
 tree.insert(6); //6 is already in the tree
-tree.print();   //1 2 3 4 5 6 7
+//tree.print();   //1 2 3 4 5 6 7
 /*
 //testing other prints:
 tree.changePrint("pre");
@@ -365,11 +392,34 @@ tree.remove(7);
 //tree.print(); //2 3 4 5 6
 
 //removing nodes w/ one child
-tree.remove(3);
+tree.remove(2);
+tree.remove(6);
+tree.print(); //3 4 5
 tree.remove(5);
-//tree.print(); //2 4 6
+tree.remove(4);
+tree.remove(3);
+//tree.print(); //tree is empty
+
+//populating new tree:
+tree.insert(10);
+tree.insert(14);
+tree.insert(6);
+tree.insert(4);
+tree.insert(8);
+tree.insert(3);
+tree.insert(5);
+tree.insert(7);
+tree.insert(9);
+tree.print(); //3 4 5 6 7 8 9 10 14
+
+//deleting nodes w/ two children
 tree.remove(6);
 tree.remove(4);
-tree.remove(2);
+tree.remove(7);
+//tree.print(); //3 5 8 9 10 14
 
-tree.print(); //tree is empty
+//deleting root node:
+tree.remove(10);
+//tree.print(); //3 5 8 9 14
+tree.changePrint("pre");
+tree.print(); //14 8 5 3 9
