@@ -119,7 +119,7 @@ export function BST(){
           tmp:tmp,
           parent:parent
         };
-        
+
         return searchInfo;
       }
       else{
@@ -275,8 +275,8 @@ export function BST(){
       alert("tree is empty")
     }else{
       var treeString="";
-      treeString="tree contains(in-order):\r"+treeString+doPrintInorder(root, treeString);
-      alert(treeString);
+      treeString="tree contains(in-order):<br>"+treeString+doPrintInorder(root, treeString);
+      return treeString;
     }
   }
   function doPrintInorder(node, treeString){
@@ -286,7 +286,7 @@ export function BST(){
       treeString=doPrintInorder(node.leftChild, treeString);
     }
     //alert(node.value);
-    treeString=treeString+node.value+"\r";
+    treeString=treeString+node.value+"<br>";
     if(node.rightChild!=null){
       treeString=doPrintInorder(node.rightChild, treeString);
     }
@@ -304,15 +304,15 @@ export function BST(){
       alert("tree is empty");
     }else{
       var treeString="";
-      treeString="tree contains(pre-order):\r"+treeString+doPrintPreorder(root, treeString);
-      alert(treeString);
+      treeString="tree contains(pre-order):<br>"+treeString+doPrintPreorder(root, treeString);
+      return treeString;
     }
   }
   function doPrintPreorder(node,treeString){
     //this function actually does the preorder printing
     //alert(node.value);
     //treeString=treeString+node.value+"\r";
-    treeString=treeString+node.value+"\r";
+    treeString=treeString+node.value+"<br>";
     if(node.leftChild!=null){
       treeString=doPrintPreorder(node.leftChild, treeString);
     }
@@ -333,8 +333,8 @@ export function BST(){
       alert("tree is empty");
     }else{
       var treeString="";
-      treeString="tree contains(post-order):\r"+treeString+doPrintPostorder(root, treeString);
-      alert(treeString);
+      treeString="tree contains(post-order):<br>"+treeString+doPrintPostorder(root, treeString);
+      return treeString;
     }
   }
   function doPrintPostorder(node, treeString){
@@ -345,7 +345,7 @@ export function BST(){
     if(node.rightChild!=null){
       treeString=doPrintPostorder(node.rightChild, treeString);
     }
-    treeString=treeString+node.value+"\r";
+    treeString=treeString+node.value+"<br>";
     return treeString;
   }
 
