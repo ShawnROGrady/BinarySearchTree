@@ -406,10 +406,10 @@ function BST(){
       userInput=prompt("enter a value to search for");
       if(tree.search(Number(userInput)).found){
         //value was in list
-        alert(userInput+" is in the list");
+        alert(userInput+" is in the tree");
       }else{
         //not in list
-        alert(userInput+" is not in the list");
+        alert(userInput+" is not in the tree");
       }
     }
     else if(choice==5||choice==null){
