@@ -20,6 +20,18 @@
               <li> i.e. no duplicate values allowed
               <li> trying to add a duplicate will trigger a pop-up
             </ul>
+          <li> The text under the <q>Last action:</q> field displays the most recent <b>valid</b> operation on the tree
+            <ul>
+              <li> I am defining an invalid operation as the following:
+                <ol type="i">
+                  <li> entering a non-numeric input to any of the fields
+                  <li> trying to insert a duplicate value to the tree
+                  <li> trying to search for a value or remove a value from an empty tree
+                  <li> trying to print an empty tree
+                  <li> trying to print the tree with out selecting a printing order
+                </ol>
+              <li> Any of the above will trigger a pop-up
+            </ul>
         </ol>
       </p>
       <h2>Click button below to start</h2>
@@ -36,9 +48,9 @@
       </form>
       <form id="printTree" action="">
         3. Print the tree<br>
-        <input type="radio" name="direction" value="in"> Inorder<br>
-        <input type="radio" name="direction" value="pre"> Preorder<br>
-        <input type="radio" name="direction" value="post"> Postorder<br>
+        <input type="radio" name="direction" value="in"> Inorder (nodes visited left-parent-right)<br>
+        <input type="radio" name="direction" value="pre"> Preorder (nodes visited parent-left-right)<br>
+        <input type="radio" name="direction" value="post"> Postorder (nodes visited left-right-parent)<br>
         <input type='button'  id='printEnter' value='print'><br>
         <br>
       </form>
@@ -52,13 +64,18 @@
         5. Terminate the program<br>
         <input type='button'  id='terminateEnter' value='Terminate'>
       </form>
+      <!--object data="/images/test.pdf"></object-->
+      <h3></h3>
+      <p id="lastAction"></p>
       <script>
-      document.getElementById('addNode').style.display="none";
-      document.getElementById('removeNode').style.display="none";
-      document.getElementById('printTree').style.display="none";
-      document.getElementById('searchNode').style.display="none";
-      document.getElementById('terminateProgram').style.display="none";
+        document.getElementById('addNode').style.display="none";
+        document.getElementById('removeNode').style.display="none";
+        document.getElementById('printTree').style.display="none";
+        document.getElementById('searchNode').style.display="none";
+        document.getElementById('terminateProgram').style.display="none";
+        //document.querySelector('object').style.display="none";
+        //document.querySelector('h3').style.diplay="none";
       </script>
-      <script type="module" src="scripts/main.js"></script>
+      <script type="module" src="/scripts/main.js"></script>
     </body>
 </html>

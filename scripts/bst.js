@@ -34,27 +34,32 @@ export function BST(){
   var root=bstNode();
 
   function doInsert(input){
-    var newNode=bstNode();
-    newNode.setValue(input);
-    if(root.value==null){
-      //list is empty
-      root=newNode;
-      alert(input+" was added to the tree as the root");
+    if(isNaN(input)){
+      alert("only numeric values are allowed in the tree");
     }
     else{
-      var tmp=root;
-      var parent=root;
-      var search=doSearch(input);
-      if(search.found==true){
-        //value already in tree
-        alert(input + " is already in the tree");
+      var newNode=bstNode();
+      newNode.setValue(input);
+      if(root.value==null){
+        //list is empty
+        root=newNode;
+        return(input+" was added to the tree as the root");
       }
       else{
-        if(input<search.tmp.value){
-          leftInsert(newNode, search.tmp);
+        var tmp=root;
+        var parent=root;
+        var search=doSearch(input);
+        if(search.found==true){
+          //value already in tree
+          alert(input + " is already in the tree");
         }
         else{
-          rightInsert(newNode, search.tmp);
+          if(input<search.tmp.value){
+            return leftInsert(newNode, search.tmp);
+          }
+          else{
+            return rightInsert(newNode, search.tmp);
+          }
         }
       }
     }
@@ -62,54 +67,66 @@ export function BST(){
   function leftInsert(newNode, parentNode){
     parentNode.setLeftChild(newNode);
     newNode.setParent(parentNode);
-    alert(newNode.value+" was added to the tree as the left child to "+ parentNode.value);
+    return(newNode.value+" was added to the tree as the left child to "+ parentNode.value);
   }
   function rightInsert(newNode, parentNode){
     parentNode.setRightChild(newNode);
     newNode.setParent(parentNode);
-    alert(newNode.value+" was added to the tree as the right child to "+ parentNode.value);
+    return(newNode.value+" was added to the tree as the right child to "+ parentNode.value);
   }
 
   function doSearch(input){
     //since this function is going to be to help insert+remove, it will be easier to make it iterative instead of recursive
-    var found=false;
-    var tmp=root;
-    var parent=tmp;
-    if(root.value!=null){
-      while(true){
-        if(input<tmp.value){
-          if(tmp.leftChild!=null){
-            parent=tmp;
-            tmp=tmp.leftChild;
-          }
-          else{
-            break;
-          }
-        }
-        else if(input>tmp.value){
-          if(tmp.rightChild!=null){
-            parent=tmp;
-            tmp=tmp.rightChild;
-          }
-          else{
-            //tmp has the value we searched for
-            break;
-          }
-        }
-        else{
-          //found it
-          found=true;
-          break;
-        }
-      }
-      //now, tmp is either the node holding the value we searched for, or is the node that would be that value's parent
-      var searchInfo={
-        found:found,
-        tmp:tmp,
-        parent:parent
-      };
-      return searchInfo;
+    if(isNaN(input)){
+      alert("please enter a numeric value");
     }
+    else{
+      var found=false;
+      var tmp=root;
+      var parent=tmp;
+
+      if(root.value!=null){
+        while(true){
+          if(input<tmp.value){
+            if(tmp.leftChild!=null){
+              parent=tmp;
+              tmp=tmp.leftChild;
+            }
+            else{
+              break;
+            }
+          }
+          else if(input>tmp.value){
+            if(tmp.rightChild!=null){
+              parent=tmp;
+              tmp=tmp.rightChild;
+            }
+            else{
+              //tmp has the value we searched for
+              break;
+            }
+          }
+          else{
+            //found it
+            found=true;
+            break;
+          }
+        }
+        //now, tmp is either the node holding the value we searched for, or is the node that would be that value's parent
+
+        var searchInfo={
+          found:found,
+          tmp:tmp,
+          parent:parent
+        };
+
+        return searchInfo;
+      }
+      else{
+        alert("tree is empty, cannot search for a value");
+      }
+    }
+
   }
 
   function doRemove(input){
@@ -119,45 +136,50 @@ export function BST(){
       2. The node we are deleting has a single child node
       3. The node we are deleting has two child nodes
     */
-    if(root.value!=null){
-      //there are things in the tree
-      var search=doSearch(input)
-      if(search.found==true){
-        //value is in the tree
-        if(search.tmp.leftChild==null && search.tmp.rightChild==null){
-          //Case 1: node has no child nodes
-          removeNoChild(search.tmp, search.parent);
-        }
-        else if(search.tmp.leftChild!=null && search.tmp.rightChild==null){
-          //Case 2(a): node only has left child node
-          removeLeftChild(search.tmp, search.parent);
-        }
-        else if(search.tmp.leftChild==null && search.tmp.rightChild!=null){
-          //Case 2(b): node only has right child node
-          removeRightChild(search.tmp, search.parent);
-        }
-        else{
-          //Case 3: parent has two children
-          var subTreeMin=findSubTreeMin(search.tmp.rightChild);
-          removeTwoChild(search.tmp, subTreeMin.value); //set nodes value to that of its right subtree's minimum
-          //delete node w/ right subtree's minimum
-          if(subTreeMin.rightChild==null){
-            removeNoChild(subTreeMin, subTreeMin.parent);
-          }
-          else{
-            removeRightChild(subTreeMin, subTreeMin.parent);
-          }
-
-        }
-        alert(input+ " has been removed from the tree");
-      }
-      else{
-        alert(input+" is not in the tree");
-      }
-
+    if(isNaN(input)){
+      alert("please enter a numeric value");
     }
     else{
-      alert("tree is empty, cannot remove anything")
+      if(root.value!=null){
+        //there are things in the tree
+        var search=doSearch(input)
+        if(search.found==true){
+          //value is in the tree
+          if(search.tmp.leftChild==null && search.tmp.rightChild==null){
+            //Case 1: node has no child nodes
+            removeNoChild(search.tmp, search.parent);
+          }
+          else if(search.tmp.leftChild!=null && search.tmp.rightChild==null){
+            //Case 2(a): node only has left child node
+            removeLeftChild(search.tmp, search.parent);
+          }
+          else if(search.tmp.leftChild==null && search.tmp.rightChild!=null){
+            //Case 2(b): node only has right child node
+            removeRightChild(search.tmp, search.parent);
+          }
+          else{
+            //Case 3: parent has two children
+            var subTreeMin=findSubTreeMin(search.tmp.rightChild);
+            removeTwoChild(search.tmp, subTreeMin.value); //set nodes value to that of its right subtree's minimum
+            //delete node w/ right subtree's minimum
+            if(subTreeMin.rightChild==null){
+              removeNoChild(subTreeMin, subTreeMin.parent);
+            }
+            else{
+              removeRightChild(subTreeMin, subTreeMin.parent);
+            }
+
+          }
+          return (input+ " has been removed from the tree");
+        }
+        else{
+          alert(input+" is not in the tree");
+        }
+
+      }
+      else{
+        alert("tree is empty, cannot remove anything")
+      }
     }
   }
 
@@ -253,8 +275,8 @@ export function BST(){
       alert("tree is empty")
     }else{
       var treeString="";
-      treeString="tree contains(in-order):\r"+treeString+doPrintInorder(root, treeString);
-      alert(treeString);
+      treeString="tree contains(in-order):<br>"+treeString+doPrintInorder(root, treeString);
+      return treeString;
     }
   }
   function doPrintInorder(node, treeString){
@@ -264,7 +286,7 @@ export function BST(){
       treeString=doPrintInorder(node.leftChild, treeString);
     }
     //alert(node.value);
-    treeString=treeString+node.value+"\r";
+    treeString=treeString+node.value+"<br>";
     if(node.rightChild!=null){
       treeString=doPrintInorder(node.rightChild, treeString);
     }
@@ -282,15 +304,15 @@ export function BST(){
       alert("tree is empty");
     }else{
       var treeString="";
-      treeString="tree contains(pre-order):\r"+treeString+doPrintPreorder(root, treeString);
-      alert(treeString);
+      treeString="tree contains(pre-order):<br>"+treeString+doPrintPreorder(root, treeString);
+      return treeString;
     }
   }
   function doPrintPreorder(node,treeString){
     //this function actually does the preorder printing
     //alert(node.value);
     //treeString=treeString+node.value+"\r";
-    treeString=treeString+node.value+"\r";
+    treeString=treeString+node.value+"<br>";
     if(node.leftChild!=null){
       treeString=doPrintPreorder(node.leftChild, treeString);
     }
@@ -311,8 +333,8 @@ export function BST(){
       alert("tree is empty");
     }else{
       var treeString="";
-      treeString="tree contains(post-order):\r"+treeString+doPrintPostorder(root, treeString);
-      alert(treeString);
+      treeString="tree contains(post-order):<br>"+treeString+doPrintPostorder(root, treeString);
+      return treeString;
     }
   }
   function doPrintPostorder(node, treeString){
@@ -323,7 +345,7 @@ export function BST(){
     if(node.rightChild!=null){
       treeString=doPrintPostorder(node.rightChild, treeString);
     }
-    treeString=treeString+node.value+"\r";
+    treeString=treeString+node.value+"<br>";
     return treeString;
   }
 
