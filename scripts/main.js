@@ -40,7 +40,24 @@ insertButton.onclick=function(){
   tree.insert(Number(userInput));
   insert.elements[0].value=""; //clear form
 }
-
+removeButton.onclick=function(){
+  var remove=document.getElementById('removeNode');
+  var userInput=remove.elements[0].value;
+  tree.remove(Number(userInput));
+  remove.elements[0].value=""; //clear form
+}
+searchButton.onclick=function(){
+  var search=document.getElementById('searchNode');
+  var userInput=search.elements[0].value;
+  if(tree.search(Number(userInput)).found){
+    //value was in list
+    alert(userInput+" is in the tree");
+  }else{
+    //not in list
+    alert(userInput+" is not in the tree");
+  }
+  search.elements[0].value=""; //clear form
+}
 printButton.onclick=function(){
   var print=document.getElementById('printTree');
   var treeContents; //this is a string, returned by the print function
@@ -66,4 +83,13 @@ printButton.onclick=function(){
     //user did not press either button
     alert("please select a direction");
   }
+}
+terminateButton.onclick=function(){
+  document.querySelector('h2').textContent="Thank you for using this program"; //change from initial instruction
+  //hide all forms
+  document.getElementById('addNode').style.display="none";
+  document.getElementById('removeNode').style.display="none";
+  document.getElementById('printTree').style.display="none";
+  document.getElementById('searchNode').style.display="none";
+  document.getElementById('terminateProgram').style.display="none";
 }
