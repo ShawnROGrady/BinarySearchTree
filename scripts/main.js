@@ -48,20 +48,27 @@ insertButton.onclick=function(){
 removeButton.onclick=function(){
   var remove=document.getElementById('removeNode');
   var userInput=remove.elements[0].value;
-  tree.remove(Number(userInput));
   remove.elements[0].value=""; //clear form
+  var action=tree.remove(Number(userInput));
+  if(action!=null){
+    lastAction.textContent=action;  //update last action paragraph
+  }
 }
 searchButton.onclick=function(){
   var search=document.getElementById('searchNode');
   var userInput=search.elements[0].value;
-  if(tree.search(Number(userInput)).found){
-    //value was in list
-    alert(userInput+" is in the tree");
-  }else{
-    //not in list
-    alert(userInput+" is not in the tree");
-  }
   search.elements[0].value=""; //clear form
+  var action=tree.search(Number(userInput));
+  if(action!=null){
+    //there are things in tree+user entered valid input
+    if(tree.search(Number(userInput)).found){
+      //value was in list
+      lastAction.textContent=(userInput+" is in the tree");
+    }else{
+      //not in list
+      lastAction.textContent=(userInput+" is not in the tree");
+    }
+  }
 }
 printButton.onclick=function(){
   var print=document.getElementById('printTree');
