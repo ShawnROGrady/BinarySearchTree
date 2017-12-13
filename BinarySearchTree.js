@@ -20,6 +20,8 @@
 +I currently believe I can:
   -insert values
   -print the tree inorder, preorder and postorder
+  -search for a value
+  -remove a value
 */
 
 "use strict";
