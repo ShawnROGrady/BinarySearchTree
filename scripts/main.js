@@ -108,10 +108,10 @@ printButton.onclick=function(){
     //drawing the tree
     tree.changePrint("draw");
     //alert(tree.getMaxDepth());
-
     ctx.font = "30px Arial";
     ctx.textAlign='center';
     treeContents=tree.print();
+    ctx.clearRect(0, 0, 1000, 500); //clear prior canvas drawing
     eval(treeContents);
   }
   else{
