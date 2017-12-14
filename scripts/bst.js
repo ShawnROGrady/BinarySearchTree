@@ -400,7 +400,17 @@ export function BST(){
       var treeString="";
       //treeString="var canvas = document.getElementById('myCanvas');var ctx = canvas.getContext('2d');ctx.font = '30px Arial';ctx.textAlign='center';"+doDrawTree(root, treeString);
       var treeDepth=doGetMaxDepth(root);
-      treeString=doDrawTree(root, treeString, 500, 50, treeDepth/3);
+      //treeString=doDrawTree(root, treeString, 500, 50, treeDepth/3);
+
+      if(treeDepth<6){
+        treeString=doDrawTree(root, treeString, 500, 50, treeDepth/3);
+      }
+
+
+      else{
+        //treeString=doDrawTree(root, treeString, 500, 50, (15)/treeDepth);
+        treeString=doDrawTree(root, treeString, 500, 50, (treeDepth+5)/(treeDepth));
+      }
       return treeString;
 
     }
@@ -414,19 +424,20 @@ export function BST(){
     if(node.leftChild!=null){
       leftLine="ctx.beginPath();"
       leftLine=leftLine+"ctx.moveTo("+width+","+height+");";
-      leftLine=leftLine+"ctx.lineTo("+(width-(100*hScale))+","+(height+30)+");";
+      //leftLine=leftLine+"ctx.lineTo("+(width-(100*hScale))+","+(height+30)+");";
+      leftLine=leftLine+"ctx.lineTo("+(width-(140*hScale))+","+(height+30)+");";
       leftLine=leftLine+"ctx.stroke();"
       treeString=treeString+leftLine;
       //alert(leftLine);
-      treeString=doDrawTree(node.leftChild, treeString,width-(100*hScale), height+50,hScale/2);
+      treeString=doDrawTree(node.leftChild, treeString,width-(140*hScale), height+50,hScale/2);
     }
     if(node.rightChild!=null){
       rightLine="ctx.beginPath();"
       rightLine=rightLine+"ctx.moveTo("+width+","+height+");";
-      rightLine=rightLine+"ctx.lineTo("+(width+(100*hScale))+","+(height+30)+");";
+      rightLine=rightLine+"ctx.lineTo("+(width+(140*hScale))+","+(height+30)+");";
       rightLine=rightLine+"ctx.stroke();"
       treeString=treeString+rightLine;
-      treeString=doDrawTree(node.rightChild, treeString, width+(100*hScale), height+50,hScale/2);
+      treeString=doDrawTree(node.rightChild, treeString, width+(140*hScale), height+50,hScale/2);
     }
 
     return treeString;
