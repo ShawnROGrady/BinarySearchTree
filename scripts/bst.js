@@ -359,6 +359,9 @@ export function BST(){
     else if(direction=="post"||direction=="Post"){
       treeAPI.print=printPostorder;
     }
+    else if(direction=="draw"){
+      treeAPI.print=drawTree;
+    }
     else{
       alert("invalid input");
     }
@@ -387,7 +390,33 @@ export function BST(){
       rightDepth=0;
     }
     return Number(Math.max(rightDepth+1, leftDebth+1));
+  }
 
+  function drawTree(){
+    if(root.value==null){
+      alert("tree is empty");
+    }else{
+
+      var treeString="";
+      //treeString="var canvas = document.getElementById('myCanvas');var ctx = canvas.getContext('2d');ctx.font = '30px Arial';ctx.textAlign='center';"+doDrawTree(root, treeString);
+      treeString=doDrawTree(root, treeString);
+      return treeString;
+
+    }
+  }
+  function doDrawTree(node, treeString){
+    //this function populates a string, which will contain the directions to draw the tree
+    //a preorder traversal felt like it made sense
+    treeString=treeString+"ctx.fillText('"+node.value+" ',500,50);";
+    /*
+    if(node.leftChild!=null){
+      treeString=doPrintPreorder(node.leftChild, treeString);
+    }
+    if(node.rightChild!=null){
+      treeString=doPrintPreorder(node.rightChild, treeString);
+    }
+    */
+    return treeString;
   }
   var treeAPI={
     insert:doInsert,
