@@ -22,6 +22,10 @@ var removeButton=document.getElementById("removeEnter");
 var searchButton=document.getElementById("searchEnter");
 var printButton=document.getElementById("printEnter");
 var terminateButton=document.getElementById("terminateEnter");
+//canvas elements:
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+
 
 startButton.onclick=function(){
   startButton.style.display="none";
@@ -99,6 +103,16 @@ printButton.onclick=function(){
     if(treeContents!=null){
       lastAction.innerHTML=treeContents;
     }
+  }
+  else if(print.elements[3].checked){
+    //drawing the tree
+    tree.changePrint("draw");
+    //alert(tree.getMaxDepth());
+
+    ctx.font = "30px Arial";
+    ctx.textAlign='center';
+    treeContents=tree.print();
+    eval(treeContents);
   }
   else{
     //user did not press either button
