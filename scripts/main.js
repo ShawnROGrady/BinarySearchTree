@@ -22,10 +22,12 @@ var removeButton=document.getElementById("removeEnter");
 var searchButton=document.getElementById("searchEnter");
 var printButton=document.getElementById("printEnter");
 var terminateButton=document.getElementById("terminateEnter");
+var autoButton=document.getElementById('auto');
 //canvas elements:
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
+var auto;
 
 startButton.onclick=function(){
   startButton.style.display="none";
@@ -41,6 +43,8 @@ startButton.onclick=function(){
   //create last action header+give starting state
   document.querySelector('h3').textContent="Last action:";
   lastAction.textContent="no valid operations have been performed yet";
+  auto=false; //default
+  autoButton.style.display="block";
 }
 
 insertButton.onclick=function(){
@@ -51,6 +55,9 @@ insertButton.onclick=function(){
   if(action!=null){
     lastAction.textContent=action;  //update last action paragraph
   }
+  if(auto){
+    autoDraw();
+  }
 }
 removeButton.onclick=function(){
   var remove=document.getElementById('removeNode');
@@ -59,6 +66,9 @@ removeButton.onclick=function(){
   var action=tree.remove(Number(userInput));
   if(action!=null){
     lastAction.textContent=action;  //update last action paragraph
+  }
+  if(auto){
+    autoDraw();
   }
 }
 searchButton.onclick=function(){
@@ -111,6 +121,7 @@ printButton.onclick=function(){
     ctx.font = "30px Arial";
     ctx.textAlign='center';
     treeContents=tree.print();
+    //alert(treeContents);
     ctx.clearRect(0, 0, 1000, 500); //clear prior canvas drawing
     eval(treeContents);
   }
@@ -130,4 +141,19 @@ terminateButton.onclick=function(){
   //hide last action field
   document.querySelector('h3').style.display="none";
   lastAction.style.display="none"
+}
+autoButton.onclick=function(){
+  auto=true;
+}
+function autoDraw(){
+  //drawing the tree
+  var treeContents;
+  tree.changePrint("draw");
+  //alert(tree.getMaxDepth());
+  ctx.font = "30px Arial";
+  ctx.textAlign='center';
+  treeContents=tree.print();
+  //alert(treeContents);
+  ctx.clearRect(0, 0, 1000, 500); //clear prior canvas drawing
+  eval(treeContents);
 }
