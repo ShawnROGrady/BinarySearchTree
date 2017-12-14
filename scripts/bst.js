@@ -363,12 +363,39 @@ export function BST(){
       alert("invalid input");
     }
   }
+
+  function getMaxDepth(){
+    if(root.value==null){
+      alert("tree is empty");
+    }
+    else{
+      return doGetMaxDepth(root);
+    }
+  }
+  function doGetMaxDepth(node){
+    //this actually finds the maximimum number of edges between the root and any node
+    var leftDebth;
+    var rightDepth;
+    if(node.leftChild!=null){
+      leftDebth=doGetMaxDepth(node.leftChild);
+    }else{
+      leftDebth=0;
+    }
+    if(node.rightChild!=null){
+      rightDepth=doGetMaxDepth(node.rightChild);
+    }else{
+      rightDepth=0;
+    }
+    return Number(Math.max(rightDepth+1, leftDebth+1));
+
+  }
   var treeAPI={
     insert:doInsert,
     print:printInorder,  //print in order by default
     changePrint:changePrint,
     search:doSearch,
-    remove:doRemove
+    remove:doRemove,
+    getMaxDepth:getMaxDepth
   };
   return treeAPI;
 }
