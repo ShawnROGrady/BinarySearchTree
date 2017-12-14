@@ -1,429 +1,133 @@
-//all code by Shawn O'Grady
+/*
+  Code by Shawn O'Grady
+  This file is responsible for taking the user input
+  +The goal is to allow the user to perform all the following through forms on a webpage:
+    1. insert a value
+    2. remove a value
+    3. print the entire tree (inorder, preorder, or postorder)
+    4. search the tree for a specific value
+    5. close the program
+*/
+//using strict mode for safety
+"use strict";
+import {BST} from "./bst.js";
 
-//Node for Binary Search Tree
-function bstNode(){
-  var value;
-  var parent, leftChild, rightChild;
-  var duplicate;  //not used for now
+var tree= BST();  //the binary search tree
 
-  function doSetLeftChild(newNode){
-    this.leftChild=newNode;
-  }
-  function doSetRightChild(newNode){
-    this.rightChild=newNode;
-  }
-  function doSetParent(newNode){
-    this.parent=newNode;
-  }
-  function doSetValue(input){
-    this.value=input;
-  }
-  var NodeAPI={
-    setRightChild:doSetRightChild,
-    setLeftChild:doSetLeftChild,
-    setParent:doSetParent,
-    setValue:doSetValue
-  };
+var lastAction=document.getElementById("lastAction"); //paragraph diplaying last valid operation performed on the tree
+//the various buttons:
+var startButton=document.getElementById('start');
+var insertButton=document.getElementById("insertEnter");
+var removeButton=document.getElementById("removeEnter");
+var searchButton=document.getElementById("searchEnter");
+var printButton=document.getElementById("printEnter");
+var terminateButton=document.getElementById("terminateEnter");
+//canvas elements:
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
 
-  return NodeAPI;
 
+startButton.onclick=function(){
+  startButton.style.display="none";
+  document.querySelector('h2').textContent="Choose from the following:"; //change initial instruction
+  document.getElementById("welcome").style.display="none"; //hide program info
+  document.querySelector('ol').style.display="none";
+  //display all forms:
+  document.getElementById('addNode').style.display="block";
+  document.getElementById('removeNode').style.display="block";
+  document.getElementById('printTree').style.display="block";
+  document.getElementById('searchNode').style.display="block";
+  document.getElementById('terminateProgram').style.display="block";
+  //create last action header+give starting state
+  document.querySelector('h3').textContent="Last action:";
+  lastAction.textContent="no valid operations have been performed yet";
 }
 
-//Binary search Tree
-export function BST(){
-  var root=bstNode();
-
-  function doInsert(input){
-    if(isNaN(input)){
-      alert("only numeric values are allowed in the tree");
-    }
-    else{
-      var newNode=bstNode();
-      newNode.setValue(input);
-      if(root.value==null){
-        //list is empty
-        root=newNode;
-        return(input+" was added to the tree as the root");
-      }
-      else{
-        var tmp=root;
-        var parent=root;
-        var search=doSearch(input);
-        if(search.found==true){
-          //value already in tree
-          alert(input + " is already in the tree");
-        }
-        else{
-          if(input<search.tmp.value){
-            return leftInsert(newNode, search.tmp);
-          }
-          else{
-            return rightInsert(newNode, search.tmp);
-          }
-        }
-      }
-    }
+insertButton.onclick=function(){
+  var insert=document.getElementById('addNode');
+  var userInput=insert.elements[0].value;
+  insert.elements[0].value=""; //clear form
+  var action=tree.insert(Number(userInput));
+  if(action!=null){
+    lastAction.textContent=action;  //update last action paragraph
   }
-  function leftInsert(newNode, parentNode){
-    parentNode.setLeftChild(newNode);
-    newNode.setParent(parentNode);
-    return(newNode.value+" was added to the tree as the left child to "+ parentNode.value);
+}
+removeButton.onclick=function(){
+  var remove=document.getElementById('removeNode');
+  var userInput=remove.elements[0].value;
+  remove.elements[0].value=""; //clear form
+  var action=tree.remove(Number(userInput));
+  if(action!=null){
+    lastAction.textContent=action;  //update last action paragraph
   }
-  function rightInsert(newNode, parentNode){
-    parentNode.setRightChild(newNode);
-    newNode.setParent(parentNode);
-    return(newNode.value+" was added to the tree as the right child to "+ parentNode.value);
-  }
-
-  function doSearch(input){
-    //since this function is going to be to help insert+remove, it will be easier to make it iterative instead of recursive
-    if(isNaN(input)){
-      alert("please enter a numeric value");
-    }
-    else{
-      var found=false;
-      var tmp=root;
-      var parent=tmp;
-
-      if(root.value!=null){
-        while(true){
-          if(input<tmp.value){
-            if(tmp.leftChild!=null){
-              parent=tmp;
-              tmp=tmp.leftChild;
-            }
-            else{
-              break;
-            }
-          }
-          else if(input>tmp.value){
-            if(tmp.rightChild!=null){
-              parent=tmp;
-              tmp=tmp.rightChild;
-            }
-            else{
-              //tmp has the value we searched for
-              break;
-            }
-          }
-          else{
-            //found it
-            found=true;
-            break;
-          }
-        }
-        //now, tmp is either the node holding the value we searched for, or is the node that would be that value's parent
-
-        var searchInfo={
-          found:found,
-          tmp:tmp,
-          parent:parent
-        };
-
-        return searchInfo;
-      }
-      else{
-        alert("tree is empty, cannot search for a value");
-      }
-    }
-
-  }
-
-  function doRemove(input){
-    /*
-    for a removing a node from a BST we must consider all three cases:
-      1. The node we are deleting has no child nodes
-      2. The node we are deleting has a single child node
-      3. The node we are deleting has two child nodes
-    */
-    if(isNaN(input)){
-      alert("please enter a numeric value");
-    }
-    else{
-      if(root.value!=null){
-        //there are things in the tree
-        var search=doSearch(input)
-        if(search.found==true){
-          //value is in the tree
-          if(search.tmp.leftChild==null && search.tmp.rightChild==null){
-            //Case 1: node has no child nodes
-            removeNoChild(search.tmp, search.parent);
-          }
-          else if(search.tmp.leftChild!=null && search.tmp.rightChild==null){
-            //Case 2(a): node only has left child node
-            removeLeftChild(search.tmp, search.parent);
-          }
-          else if(search.tmp.leftChild==null && search.tmp.rightChild!=null){
-            //Case 2(b): node only has right child node
-            removeRightChild(search.tmp, search.parent);
-          }
-          else{
-            //Case 3: parent has two children
-            var subTreeMin=findSubTreeMin(search.tmp.rightChild);
-            removeTwoChild(search.tmp, subTreeMin.value); //set nodes value to that of its right subtree's minimum
-            //delete node w/ right subtree's minimum
-            if(subTreeMin.rightChild==null){
-              removeNoChild(subTreeMin, subTreeMin.parent);
-            }
-            else{
-              removeRightChild(subTreeMin, subTreeMin.parent);
-            }
-
-          }
-          return (input+ " has been removed from the tree");
-        }
-        else{
-          alert(input+" is not in the tree");
-        }
-
-      }
-      else{
-        alert("tree is empty, cannot remove anything")
-      }
-    }
-  }
-
-  function removeNoChild(tmp, parent){
-    if(tmp==root){
-      //special case of deleting last node from tree
-      root=bstNode();
-    }
-    else{
-      if(tmp.value<parent.value){
-        //node to delete is left child
-        parent.setLeftChild(null);
-        tmp.setParent(null);
-      }
-      else{
-        //node to be deleted is right child
-        parent.setRightChild(null);
-        tmp.setParent(null);
-      }
-    }
-    //console.log(tmp.value+" has been removed from the tree");
-  }
-  function removeLeftChild(tmp, parent){
-    if(tmp.value<parent.value){
-      //node to delete is left child
-      parent.setLeftChild(tmp.leftChild);
-      tmp.setParent(null);
-      tmp.leftChild.setParent(parent);
-      if(tmp==root){
-        //need to readjust if deleting the root
-        root=tmp.leftChild;
-      }
-    }
-    else{
-      //node to be deleted is right child
-      parent.setRightChild(tmp.leftChild);
-      tmp.setParent(null);
-      tmp.leftChild.setParent(parent);
-      if(tmp==root){
-        //need to readjust if deleting the root
-        root=tmp.rightChild;
-      }
-    }
-    //console.log(tmp.value+" has been removed from the tree");
-  }
-
-  function removeRightChild(tmp, parent){
-    if(tmp.value<parent.value){
-      //node to delete is left child
-      parent.setLeftChild(tmp.rightChild);
-      tmp.setParent(null);
-      tmp.rightChild.setParent(parent);
-      if(tmp==root){
-        //need to readjust if deleting the root
-        root=tmp.leftChild;
-      }
-    }
-    else{
-      //node to be deleted is right child
-      parent.setRightChild(tmp.rightChild);
-      tmp.setParent(null);
-      tmp.rightChild.setParent(parent);
-      if(tmp==root){
-        //need to readjust if deleting the root
-        root=tmp.rightChild;
-      }
-    }
-    //console.log(tmp.value+" has been removed from the tree");
-  }
-  function removeTwoChild(tmp, rightTreeMin){
-    var tmpValue=tmp.value;
-    tmp.setValue(rightTreeMin);
-    //console.log(tmpValue+" has been removed from the tree");
-  }
-  function findSubTreeMin(node){
-    //this function finds the node of minimum value in the subtree starting with the node passed as an argument
-    while(node.leftChild!=null){
-      node=node.leftChild;
-    }
-    //alert(node.value);
-    return node;
-  }
-
-  function printInorder(){
-    /*
-    for printing inorder nodes are visited as:
-      i) left
-      ii) parent
-      iii) right
-    This is also the sorted order
-    */
-    if(root.value==null){
-      alert("tree is empty")
+}
+searchButton.onclick=function(){
+  var search=document.getElementById('searchNode');
+  var userInput=search.elements[0].value;
+  search.elements[0].value=""; //clear form
+  var action=tree.search(Number(userInput));
+  if(action!=null){
+    //there are things in tree+user entered valid input
+    if(tree.search(Number(userInput)).found){
+      //value was in list
+      lastAction.textContent=(userInput+" is in the tree");
     }else{
-      var treeString="";
-      treeString="tree contains(in-order):<br>"+treeString+doPrintInorder(root, treeString);
-      return treeString;
+      //not in list
+      lastAction.textContent=(userInput+" is not in the tree");
     }
   }
-  function doPrintInorder(node, treeString){
-    //this function actually does the inorder printing
-    //var inorderString=treeString;
-    if(node.leftChild!=null){
-      treeString=doPrintInorder(node.leftChild, treeString);
-    }
-    //alert(node.value);
-    treeString=treeString+node.value+"<br>";
-    if(node.rightChild!=null){
-      treeString=doPrintInorder(node.rightChild, treeString);
-    }
-    return treeString;
-  }
-
-  function printPreorder(){
-    /*
-    for preorder printing nodes are visited as:
-      i) parent
-      ii) left
-      iii) right
-    */
-    if(root.value==null){
-      alert("tree is empty");
-    }else{
-      var treeString="";
-      treeString="tree contains(pre-order):<br>"+treeString+doPrintPreorder(root, treeString);
-      return treeString;
+}
+printButton.onclick=function(){
+  var print=document.getElementById('printTree');
+  var treeContents; //this is a string, returned by the print function
+  if(print.elements[0].checked){
+    //inorder button pressed
+    tree.changePrint("in");
+    treeContents=tree.print();
+    if(treeContents!=null){
+      lastAction.innerHTML=treeContents;
     }
   }
-  function doPrintPreorder(node,treeString){
-    //this function actually does the preorder printing
-    //alert(node.value);
-    //treeString=treeString+node.value+"\r";
-    treeString=treeString+node.value+"<br>";
-    if(node.leftChild!=null){
-      treeString=doPrintPreorder(node.leftChild, treeString);
-    }
-    if(node.rightChild!=null){
-      treeString=doPrintPreorder(node.rightChild, treeString);
-    }
-    return treeString;
-  }
-
-  function printPostorder(){
-    /*
-    for preorder printing nodes are visited as:
-      i) left
-      ii) right
-      iii) parent
-    */
-    if(root.value==null){
-      alert("tree is empty");
-    }else{
-      var treeString="";
-      treeString="tree contains(post-order):<br>"+treeString+doPrintPostorder(root, treeString);
-      return treeString;
+  else if(print.elements[1].checked){
+    //preorder button pressed
+    tree.changePrint("pre");
+    treeContents=tree.print();
+    if(treeContents!=null){
+      lastAction.innerHTML=treeContents;
     }
   }
-  function doPrintPostorder(node, treeString){
-    //this function actually does the postorder printing
-    if(node.leftChild!=null){
-      treeString=doPrintPostorder(node.leftChild, treeString);
-    }
-    if(node.rightChild!=null){
-      treeString=doPrintPostorder(node.rightChild, treeString);
-    }
-    treeString=treeString+node.value+"<br>";
-    return treeString;
-  }
-
-  function changePrint(direction){
-    if(direction=="in"||direction=="In"){
-      treeAPI.print=printInorder;
-    }
-    else if(direction=="pre"||direction=="Pre"){
-      treeAPI.print=printPreorder;
-    }
-    else if(direction=="post"||direction=="Post"){
-      treeAPI.print=printPostorder;
-    }
-    else if(direction=="draw"){
-      treeAPI.print=drawTree;
-    }
-    else{
-      alert("invalid input");
+  else if(print.elements[2].checked){
+    //postorder button pressed
+    tree.changePrint("post");
+    treeContents=tree.print();
+    if(treeContents!=null){
+      lastAction.innerHTML=treeContents;
     }
   }
-
-  function getMaxDepth(){
-    if(root.value==null){
-      alert("tree is empty");
-    }
-    else{
-      return doGetMaxDepth(root);
-    }
+  else if(print.elements[3].checked){
+    //drawing the tree
+    tree.changePrint("draw");
+    //alert(tree.getMaxDepth());
+    ctx.font = "30px Arial";
+    ctx.textAlign='center';
+    treeContents=tree.print();
+    ctx.clearRect(0, 0, 1000, 500); //clear prior canvas drawing
+    eval(treeContents);
   }
-  function doGetMaxDepth(node){
-    //this actually finds the maximimum number of edges between the root and any node
-    var leftDebth;
-    var rightDepth;
-    if(node.leftChild!=null){
-      leftDebth=doGetMaxDepth(node.leftChild);
-    }else{
-      leftDebth=0;
-    }
-    if(node.rightChild!=null){
-      rightDepth=doGetMaxDepth(node.rightChild);
-    }else{
-      rightDepth=0;
-    }
-    return Number(Math.max(rightDepth+1, leftDebth+1));
+  else{
+    //user did not press either button
+    alert("please select a direction");
   }
-
-  function drawTree(){
-    if(root.value==null){
-      alert("tree is empty");
-    }else{
-
-      var treeString="";
-      //treeString="var canvas = document.getElementById('myCanvas');var ctx = canvas.getContext('2d');ctx.font = '30px Arial';ctx.textAlign='center';"+doDrawTree(root, treeString);
-      treeString=doDrawTree(root, treeString, 500, 50, 1);
-      return treeString;
-
-    }
-  }
-  function doDrawTree(node, treeString, width, height, hScale){
-    //this function populates a string, which will contain the directions to draw the tree
-    //a preorder traversal felt like it made sense
-    treeString=treeString+"ctx.fillText('"+node.value+" ',"+width+","+height+");";
-    if(node.leftChild!=null){
-      treeString=doDrawTree(node.leftChild, treeString,width-(100*hScale), height+50,hScale/2);
-    }
-    if(node.rightChild!=null){
-      treeString=doDrawTree(node.rightChild, treeString, width+(100*hScale), height+50,hScale/2);
-    }
-
-    return treeString;
-  }
-  var treeAPI={
-    insert:doInsert,
-    print:printInorder,  //print in order by default
-    changePrint:changePrint,
-    search:doSearch,
-    remove:doRemove,
-    getMaxDepth:getMaxDepth
-  };
-  return treeAPI;
+}
+terminateButton.onclick=function(){
+  document.querySelector('h2').textContent="Thank you for using this program"; //change from initial instruction
+  //hide all forms
+  document.getElementById('addNode').style.display="none";
+  document.getElementById('removeNode').style.display="none";
+  document.getElementById('printTree').style.display="none";
+  document.getElementById('searchNode').style.display="none";
+  document.getElementById('terminateProgram').style.display="none";
+  //hide last action field
+  document.querySelector('h3').style.display="none";
+  lastAction.style.display="none"
 }
