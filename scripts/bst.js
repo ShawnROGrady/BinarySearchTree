@@ -408,11 +408,24 @@ export function BST(){
   function doDrawTree(node, treeString, width, height, hScale){
     //this function populates a string, which will contain the directions to draw the tree
     //a preorder traversal felt like it made sense
+    var leftLine="";
+    var rightLine="";
     treeString=treeString+"ctx.fillText('"+node.value+" ',"+width+","+height+");";
     if(node.leftChild!=null){
+      leftLine="ctx.beginPath();"
+      leftLine=leftLine+"ctx.moveTo("+width+","+height+");";
+      leftLine=leftLine+"ctx.lineTo("+(width-(100*hScale))+","+(height+30)+");";
+      leftLine=leftLine+"ctx.stroke();"
+      treeString=treeString+leftLine;
+      //alert(leftLine);
       treeString=doDrawTree(node.leftChild, treeString,width-(100*hScale), height+50,hScale/2);
     }
     if(node.rightChild!=null){
+      rightLine="ctx.beginPath();"
+      rightLine=rightLine+"ctx.moveTo("+width+","+height+");";
+      rightLine=rightLine+"ctx.lineTo("+(width+(100*hScale))+","+(height+30)+");";
+      rightLine=rightLine+"ctx.stroke();"
+      treeString=treeString+rightLine;
       treeString=doDrawTree(node.rightChild, treeString, width+(100*hScale), height+50,hScale/2);
     }
 
