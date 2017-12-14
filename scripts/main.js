@@ -151,7 +151,8 @@ function autoDraw(){
   tree.changePrint("draw");
   //alert(tree.getMaxDepth());
   var treeDepth=tree.getMaxDepth();
-
+  ctx.strokeStyle='red';
+  ctx.textBaseline="middle";
   if(treeDepth<6){
     ctx.font = "30px Arial";
   }
