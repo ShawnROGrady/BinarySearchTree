@@ -359,16 +359,96 @@ export function BST(){
     else if(direction=="post"||direction=="Post"){
       treeAPI.print=printPostorder;
     }
+    else if(direction=="draw"){
+      treeAPI.print=drawTree;
+    }
     else{
       alert("invalid input");
     }
+  }
+
+  function getMaxDepth(){
+    if(root.value==null){
+      //alert("tree is empty");
+    }
+    else{
+      return doGetMaxDepth(root);
+    }
+  }
+  function doGetMaxDepth(node){
+    //this actually finds the maximimum number of edges between the root and any node
+    var leftDebth;
+    var rightDepth;
+    if(node.leftChild!=null){
+      leftDebth=doGetMaxDepth(node.leftChild);
+    }else{
+      leftDebth=0;
+    }
+    if(node.rightChild!=null){
+      rightDepth=doGetMaxDepth(node.rightChild);
+    }else{
+      rightDepth=0;
+    }
+    return Number(Math.max(rightDepth+1, leftDebth+1));
+  }
+
+  function drawTree(){
+    if(root.value==null){
+      //alert("tree is empty");
+    }else{
+
+      var treeString="";
+      //treeString="var canvas = document.getElementById('myCanvas');var ctx = canvas.getContext('2d');ctx.font = '30px Arial';ctx.textAlign='center';"+doDrawTree(root, treeString);
+      var treeDepth=doGetMaxDepth(root);
+      //treeString=doDrawTree(root, treeString, 500, 50, treeDepth/3);
+
+      if(treeDepth<6){
+        treeString=doDrawTree(root, treeString, 500, 50, treeDepth/3, 1);
+      }
+
+
+      else{
+        //treeString=doDrawTree(root, treeString, 500, 50, (15)/treeDepth);
+        treeString=doDrawTree(root, treeString, 500, 50, (treeDepth+5)/(treeDepth), 1);
+      }
+      return treeString;
+
+    }
+  }
+  function doDrawTree(node, treeString, width, height, hScale, vScale){
+    //this function populates a string, which will contain the directions to draw the tree
+    //a preorder traversal felt like it made sense
+    var leftLine="";
+    var rightLine="";
+    treeString=treeString+"ctx.fillText('"+node.value+" ',"+width+","+height+");";
+    if(node.leftChild!=null){
+      leftLine="ctx.beginPath();"
+      leftLine=leftLine+"ctx.moveTo("+width+","+height+");";
+      //leftLine=leftLine+"ctx.lineTo("+(width-(100*hScale))+","+(height+30)+");";
+      leftLine=leftLine+"ctx.lineTo("+(width-(140*hScale))+","+((height+50)*vScale)+");";
+      leftLine=leftLine+"ctx.stroke();"
+      treeString=treeString+leftLine;
+      //alert(leftLine);
+      treeString=doDrawTree(node.leftChild, treeString,width-(140*hScale), height+50,hScale/2,vScale);
+    }
+    if(node.rightChild!=null){
+      rightLine="ctx.beginPath();"
+      rightLine=rightLine+"ctx.moveTo("+width+","+height+");";
+      rightLine=rightLine+"ctx.lineTo("+(width+(140*hScale))+","+((height+50)*vScale)+");";
+      rightLine=rightLine+"ctx.stroke();"
+      treeString=treeString+rightLine;
+      treeString=doDrawTree(node.rightChild, treeString, width+(140*hScale), height+50,hScale/2,vScale);
+    }
+
+    return treeString;
   }
   var treeAPI={
     insert:doInsert,
     print:printInorder,  //print in order by default
     changePrint:changePrint,
     search:doSearch,
-    remove:doRemove
+    remove:doRemove,
+    getMaxDepth:getMaxDepth
   };
   return treeAPI;
 }

@@ -22,6 +22,13 @@ var removeButton=document.getElementById("removeEnter");
 var searchButton=document.getElementById("searchEnter");
 var printButton=document.getElementById("printEnter");
 var terminateButton=document.getElementById("terminateEnter");
+var autoButton=document.getElementById('auto');
+var hideButton=document.getElementById("hide"); //button to hide tree drawing
+//canvas elements:
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+
+var auto;
 
 startButton.onclick=function(){
   startButton.style.display="none";
@@ -37,8 +44,29 @@ startButton.onclick=function(){
   //create last action header+give starting state
   document.querySelector('h3').textContent="Last action:";
   lastAction.textContent="no valid operations have been performed yet";
+  auto=false; //default
+  autoButton.style.display="none";
 }
-
+autoButton.onclick=function(){
+  //basically same as start button but sets value of auto to true
+  startButton.style.display="none";
+  document.querySelector('h2').textContent="Choose from the following:"; //change initial instruction
+  document.getElementById("welcome").style.display="none"; //hide program info
+  document.querySelector('ol').style.display="none";
+  //display all forms:
+  document.getElementById('addNode').style.display="block";
+  document.getElementById('removeNode').style.display="block";
+  document.getElementById('printTree').style.display="block";
+  document.getElementById('searchNode').style.display="block";
+  document.getElementById('terminateProgram').style.display="block";
+  //create last action header+give starting state
+  document.querySelector('h3').textContent="Last action:";
+  lastAction.textContent="no valid operations have been performed yet";
+  autoButton.style.display="none";
+  auto=true;
+  document.getElementById("myCanvas").style.display="block";
+  //document.getElementById('printTree').innerHTML="3. Print the tree<br><input type='radio' name='direction' value='in'> Inorder (nodes visited left-parent-right)<br><input type='radio' name='direction' value='pre'> Preorder (nodes visited parent-left-right)<br><input type='radio' name='direction' value='post'> Postorder (nodes visited left-right-parent)<br><input type='radio' id='drawRadio' name='direction' value='draw'> Draw the tree<br>  <input type='button'  id='printEnter' value='print'><br><br>";
+}
 insertButton.onclick=function(){
   var insert=document.getElementById('addNode');
   var userInput=insert.elements[0].value;
@@ -46,6 +74,9 @@ insertButton.onclick=function(){
   var action=tree.insert(Number(userInput));
   if(action!=null){
     lastAction.textContent=action;  //update last action paragraph
+  }
+  if(auto){
+    autoDraw();
   }
 }
 removeButton.onclick=function(){
@@ -55,6 +86,9 @@ removeButton.onclick=function(){
   var action=tree.remove(Number(userInput));
   if(action!=null){
     lastAction.textContent=action;  //update last action paragraph
+  }
+  if(auto){
+    autoDraw();
   }
 }
 searchButton.onclick=function(){
@@ -100,6 +134,32 @@ printButton.onclick=function(){
       lastAction.innerHTML=treeContents;
     }
   }
+  else if(print.elements[3].checked){
+    //drawing the tree
+    document.getElementById("myCanvas").style.display="block";
+    if(auto==false){
+      document.getElementById("hide").style.display="block";
+    }
+    tree.changePrint("draw");
+    tree.changePrint("draw");
+    //alert(tree.getMaxDepth());
+    var treeDepth=tree.getMaxDepth();
+    ctx.strokeStyle='red';
+    ctx.textBaseline="middle";
+    if(treeDepth<6){
+      ctx.font = "30px Arial";
+    }
+    else {
+      ctx.font = ((500)/(treeDepth*treeDepth))+"px Arial";
+      //ctx.scale(0.5,0.5);
+    }
+
+    ctx.textAlign='center';
+    treeContents=tree.print();
+    //alert(treeContents);
+    ctx.clearRect(0, 0, 1000, 500); //clear prior canvas drawing
+    eval(treeContents);
+  }
   else{
     //user did not press either button
     alert("please select a direction");
@@ -113,7 +173,36 @@ terminateButton.onclick=function(){
   document.getElementById('printTree').style.display="none";
   document.getElementById('searchNode').style.display="none";
   document.getElementById('terminateProgram').style.display="none";
+  document.getElementById("hide").style.display="none";
   //hide last action field
   document.querySelector('h3').style.display="none";
   lastAction.style.display="none"
+  //hide canvas
+  document.getElementById("myCanvas").style.display="none";
+}
+hideButton.onclick=function(){
+  document.getElementById("myCanvas").style.display="none";
+  document.getElementById("hide").style.display="none";
+}
+function autoDraw(){
+  //drawing the tree
+  var treeContents;
+  tree.changePrint("draw");
+  //alert(tree.getMaxDepth());
+  var treeDepth=tree.getMaxDepth();
+  ctx.strokeStyle='red';
+  ctx.textBaseline="middle";
+  if(treeDepth<6){
+    ctx.font = "30px Arial";
+  }
+  else {
+    ctx.font = ((500)/(treeDepth*treeDepth))+"px Arial";
+    //ctx.scale(0.5,0.5);
+  }
+
+  ctx.textAlign='center';
+  treeContents=tree.print();
+  //alert(treeContents);
+  ctx.clearRect(0, 0, 1000, 500); //clear prior canvas drawing
+  eval(treeContents);
 }
