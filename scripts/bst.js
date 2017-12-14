@@ -369,7 +369,7 @@ export function BST(){
 
   function getMaxDepth(){
     if(root.value==null){
-      alert("tree is empty");
+      //alert("tree is empty");
     }
     else{
       return doGetMaxDepth(root);
@@ -394,7 +394,7 @@ export function BST(){
 
   function drawTree(){
     if(root.value==null){
-      alert("tree is empty");
+      //alert("tree is empty");
     }else{
 
       var treeString="";
