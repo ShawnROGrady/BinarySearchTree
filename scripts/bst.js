@@ -399,23 +399,22 @@ export function BST(){
 
       var treeString="";
       //treeString="var canvas = document.getElementById('myCanvas');var ctx = canvas.getContext('2d');ctx.font = '30px Arial';ctx.textAlign='center';"+doDrawTree(root, treeString);
-      treeString=doDrawTree(root, treeString);
+      treeString=doDrawTree(root, treeString, 500, 50, 1);
       return treeString;
 
     }
   }
-  function doDrawTree(node, treeString){
+  function doDrawTree(node, treeString, width, height, hScale){
     //this function populates a string, which will contain the directions to draw the tree
     //a preorder traversal felt like it made sense
-    treeString=treeString+"ctx.fillText('"+node.value+" ',500,50);";
-    /*
+    treeString=treeString+"ctx.fillText('"+node.value+" ',"+width+","+height+");";
     if(node.leftChild!=null){
-      treeString=doPrintPreorder(node.leftChild, treeString);
+      treeString=doDrawTree(node.leftChild, treeString,width-(100*hScale), height+50,hScale/2);
     }
     if(node.rightChild!=null){
-      treeString=doPrintPreorder(node.rightChild, treeString);
+      treeString=doDrawTree(node.rightChild, treeString, width+(100*hScale), height+50,hScale/2);
     }
-    */
+
     return treeString;
   }
   var treeAPI={
