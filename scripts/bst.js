@@ -403,19 +403,19 @@ export function BST(){
       //treeString=doDrawTree(root, treeString, 500, 50, treeDepth/3);
 
       if(treeDepth<6){
-        treeString=doDrawTree(root, treeString, 500, 50, treeDepth/3);
+        treeString=doDrawTree(root, treeString, 500, 50, treeDepth/3, 1);
       }
 
 
       else{
         //treeString=doDrawTree(root, treeString, 500, 50, (15)/treeDepth);
-        treeString=doDrawTree(root, treeString, 500, 50, (treeDepth+5)/(treeDepth));
+        treeString=doDrawTree(root, treeString, 500, 50, (treeDepth+5)/(treeDepth), 1);
       }
       return treeString;
 
     }
   }
-  function doDrawTree(node, treeString, width, height, hScale){
+  function doDrawTree(node, treeString, width, height, hScale, vScale){
     //this function populates a string, which will contain the directions to draw the tree
     //a preorder traversal felt like it made sense
     var leftLine="";
@@ -425,19 +425,19 @@ export function BST(){
       leftLine="ctx.beginPath();"
       leftLine=leftLine+"ctx.moveTo("+width+","+height+");";
       //leftLine=leftLine+"ctx.lineTo("+(width-(100*hScale))+","+(height+30)+");";
-      leftLine=leftLine+"ctx.lineTo("+(width-(140*hScale))+","+(height+30)+");";
+      leftLine=leftLine+"ctx.lineTo("+(width-(140*hScale))+","+((height+50)*vScale)+");";
       leftLine=leftLine+"ctx.stroke();"
       treeString=treeString+leftLine;
       //alert(leftLine);
-      treeString=doDrawTree(node.leftChild, treeString,width-(140*hScale), height+50,hScale/2);
+      treeString=doDrawTree(node.leftChild, treeString,width-(140*hScale), height+50,hScale/2,vScale);
     }
     if(node.rightChild!=null){
       rightLine="ctx.beginPath();"
       rightLine=rightLine+"ctx.moveTo("+width+","+height+");";
-      rightLine=rightLine+"ctx.lineTo("+(width+(140*hScale))+","+(height+30)+");";
+      rightLine=rightLine+"ctx.lineTo("+(width+(140*hScale))+","+((height+50)*vScale)+");";
       rightLine=rightLine+"ctx.stroke();"
       treeString=treeString+rightLine;
-      treeString=doDrawTree(node.rightChild, treeString, width+(140*hScale), height+50,hScale/2);
+      treeString=doDrawTree(node.rightChild, treeString, width+(140*hScale), height+50,hScale/2,vScale);
     }
 
     return treeString;
