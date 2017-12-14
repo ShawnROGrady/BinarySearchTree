@@ -34,8 +34,9 @@
             </ul>
         </ol>
       </p>
-      <h2>Click button below to start</h2>
-      <button id="start">Start</button>
+      <h2>Click a button below to start</h2>
+      <button id="start">Start</button><br>
+      <button id="auto">Start with auto-draw</button>
       <form id="addNode" action="">
         1. Insert a value to the tree<br>
         <input type='text'><input type='button'  id='insertEnter' value='insert'>
@@ -65,52 +66,16 @@
         5. Terminate the program<br>
         <input type='button'  id='terminateEnter' value='Terminate'>
       </form>
-      <button id="auto">Auto-draw</button>
+
       <!--object data="/images/test.pdf"></object-->
       <h3></h3>
       <p id="lastAction"></p>
-
+      <button id="hide">hide drawing</button>
       <canvas id="myCanvas" width="1000" height="500"
         style="border:1px solid #d3d3d3;">
           Your browser does not support the canvas element.
       </canvas>
-
       <script id="drawing">
-      /*
-        var canvas = document.getElementById("myCanvas");
-        var ctx = canvas.getContext("2d");
-        ctx.font = "30px Arial";
-        ctx.textAlign='center';
-        ctx.fillText('4',400,50);
-        ctx.moveTo(400,50);
-        ctx.lineTo(300, 80);
-        ctx.stroke();
-        ctx.fillText("2",300, 100);
-        ctx.moveTo(300,100);
-        ctx.lineTo(250, 130);
-        ctx.stroke();
-        ctx.fillText("1",250, 150);
-        ctx.moveTo(250,150);
-        ctx.lineTo(225, 180);
-        ctx.stroke();
-        ctx.fillText("0",225, 200);
-        ctx.moveTo(250,150);
-        ctx.lineTo(275, 180);
-        ctx.stroke();
-        ctx.fillText("1.5",275, 200);
-        ctx.moveTo(300,100);
-        ctx.lineTo(350, 130);
-        ctx.stroke();
-        ctx.fillText("3",350, 150);
-        ctx.moveTo(350,150);
-        ctx.lineTo(325, 180);
-        ctx.stroke();
-        ctx.fillText("2.5",325, 200);
-        ctx.moveTo(400,50);
-        ctx.lineTo(500, 80);
-        ctx.stroke();
-        ctx.fillText("6",500, 100);
-        */
       </script>
       <script>
         document.getElementById('addNode').style.display="none";
@@ -120,8 +85,9 @@
         document.getElementById('terminateProgram').style.display="none";
         //document.querySelector('object').style.display="none";
         //document.querySelector('h3').style.diplay="none";
-        //document.getElementById("myCanvas").style.display="none";
-        document.getElementById('auto').style.display="none";
+        document.getElementById("myCanvas").style.display="none";
+        document.getElementById("hide").style.display="none";
+        //document.getElementById('auto').style.display="none";
       </script>
       <script type="module" src="/scripts/main.js"></script>
     </body>
