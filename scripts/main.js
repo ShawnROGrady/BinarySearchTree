@@ -150,7 +150,16 @@ function autoDraw(){
   var treeContents;
   tree.changePrint("draw");
   //alert(tree.getMaxDepth());
-  ctx.font = "30px Arial";
+  var treeDepth=tree.getMaxDepth();
+
+  if(treeDepth<6){
+    ctx.font = "30px Arial";
+  }
+  else {
+    ctx.font = ((500)/(treeDepth*treeDepth))+"px Arial";
+    //ctx.scale(0.5,0.5);
+  }
+
   ctx.textAlign='center';
   treeContents=tree.print();
   //alert(treeContents);
