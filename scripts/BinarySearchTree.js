@@ -137,6 +137,9 @@ function BST(){
       };
       return searchInfo;
     }
+    else{
+      alert("tree is empty, cannot search for a value");
+    }
   }
 
   function doRemove(input){
@@ -404,12 +407,15 @@ function BST(){
     else if(choice==4){
       //search the list
       userInput=prompt("enter a value to search for");
-      if(tree.search(Number(userInput)).found){
-        //value was in list
-        alert(userInput+" is in the tree");
-      }else{
-        //not in list
-        alert(userInput+" is not in the tree");
+      var action=tree.search(Number(userInput));
+      if(action!=null){
+        if(action.found){
+          //value was in list
+          alert(userInput+" is in the tree");
+        }else{
+          //not in list
+          alert(userInput+" is not in the tree");
+        }
       }
     }
     else if(choice==5||choice==null){
