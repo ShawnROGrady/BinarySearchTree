@@ -178,6 +178,7 @@ terminateButton.onclick=function(){
   document.getElementById('searchNode').style.display="none";
   document.getElementById('terminateProgram').style.display="none";
   document.getElementById("hide").style.display="none";
+  document.getElementById('balanceTree').style.display="none";
   //hide last action field
   document.querySelector('h3').style.display="none";
   lastAction.style.display="none"
@@ -211,5 +212,12 @@ function autoDraw(){
   eval(treeContents);
 }
 balanceButton.onclick=function(){
-  tree.balance();
+  var action=tree.balance();
+  if(action!=null){
+    //balance was successful
+    lastAction.textContent=action;  //update last action paragraph
+  }
+  if(auto){
+    autoDraw();
+  }
 }
