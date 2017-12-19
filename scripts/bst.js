@@ -442,13 +442,49 @@ export function BST(){
 
     return treeString;
   }
+
+  function balanceTree(){
+    if(root.value==null){
+      alert("tree is empty");
+    }
+    else{
+      var treeArray=[];
+      treeArray=getTreeArray(root, treeArray);
+      for(var i=0; i<treeArray.length; i++){
+        alert(treeArray[i]);
+      }
+    }
+  }
+  function getTreeInfo(){
+    //this funtion will return information about the tree needed to balance the tree
+    if(root.value==null){
+      alert("tree is empty");
+    }else{
+      var treeArray=getTreeArray(root, treeArray);  //array which holds sorted values of tree
+      return treeArray;
+    }
+  }
+  function getTreeArray(node, treeArray){
+    //this function pushes value of the tree into an array, using an inorder traversal
+    if(node.leftChild!=null){
+      treeArray=getTreeArray(node.leftChild, treeArray);
+    }
+    //alert(node.value);
+    treeArray.push(node.value);
+    //treeArray[treeArray.length]=node.value;
+    if(node.rightChild!=null){
+      treeArray=getTreeArray(node.rightChild, treeArray);
+    }
+    return treeArray;
+  }
   var treeAPI={
     insert:doInsert,
     print:printInorder,  //print in order by default
     changePrint:changePrint,
     search:doSearch,
     remove:doRemove,
-    getMaxDepth:getMaxDepth
+    getMaxDepth:getMaxDepth,
+    balance:balanceTree
   };
   return treeAPI;
 }
