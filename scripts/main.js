@@ -6,7 +6,8 @@
     2. remove a value
     3. print the entire tree (inorder, preorder, or postorder)
     4. search the tree for a specific value
-    5. close the program
+    5. balance the tree
+    6. close the program
 */
 //using strict mode for safety
 "use strict";
@@ -24,6 +25,7 @@ var printButton=document.getElementById("printEnter");
 var terminateButton=document.getElementById("terminateEnter");
 var autoButton=document.getElementById('auto');
 var hideButton=document.getElementById("hide"); //button to hide tree drawing
+var balanceButton=document.getElementById('balanceTree');
 //canvas elements:
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
@@ -40,6 +42,7 @@ startButton.onclick=function(){
   document.getElementById('removeNode').style.display="block";
   document.getElementById('printTree').style.display="block";
   document.getElementById('searchNode').style.display="block";
+  document.getElementById('balanceTree').style.display="block";
   document.getElementById('terminateProgram').style.display="block";
   //create last action header+give starting state
   document.querySelector('h3').textContent="Last action:";
@@ -58,6 +61,7 @@ autoButton.onclick=function(){
   document.getElementById('removeNode').style.display="block";
   document.getElementById('printTree').style.display="block";
   document.getElementById('searchNode').style.display="block";
+  document.getElementById('balanceTree').style.display="block";
   document.getElementById('terminateProgram').style.display="block";
   //create last action header+give starting state
   document.querySelector('h3').textContent="Last action:";
@@ -205,4 +209,7 @@ function autoDraw(){
   //alert(treeContents);
   ctx.clearRect(0, 0, 1000, 500); //clear prior canvas drawing
   eval(treeContents);
+}
+balanceButton.onclick=function(){
+  tree.balance();
 }
