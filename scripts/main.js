@@ -118,7 +118,7 @@ searchButton.onclick=function(){
   var action=tree.search(Number(userInput));
   if(action!=null){
     //there are things in tree+user entered valid input
-    if(tree.search(Number(userInput)).found){
+    if(action.found){
       //value was in list
       lastAction.textContent=(userInput+" is in the tree");
     }else{
