@@ -74,8 +74,11 @@ autoButton.onclick=function(){
 insertButton.onclick=function(){
   var insert=document.getElementById('addNode');
   var userInput=insert.elements[0].value;
+  var userArray=userInput.split(",");
   insert.elements[0].value=""; //clear form
-  var action=tree.insert(Number(userInput));
+  for(var i=0; i<userArray.length; i++){
+    var action=tree.insert(Number(userArray[i]));
+  }
   if(action!=null){
     lastAction.textContent=action;  //update last action paragraph
   }
