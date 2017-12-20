@@ -20,6 +20,7 @@ var lastAction=document.getElementById("lastAction"); //paragraph diplaying last
 var startButton=document.getElementById('start');
 var insertButton=document.getElementById("insertEnter");
 var removeButton=document.getElementById("removeEnter");
+var removeAllButton=document.getElementById("removeAll");
 var searchButton=document.getElementById("searchEnter");
 var printButton=document.getElementById("printEnter");
 var terminateButton=document.getElementById("terminateEnter");
@@ -95,6 +96,13 @@ removeButton.onclick=function(){
   if(action!=null){
     lastAction.textContent=action;  //update last action paragraph
   }
+  if(auto){
+    autoDraw();
+  }
+}
+removeAllButton.onclick=function(){
+  tree= BST();  //just reset the tree
+  lastAction.textContent="tree was reset";
   if(auto){
     autoDraw();
   }
