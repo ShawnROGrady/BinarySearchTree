@@ -78,8 +78,12 @@ insertButton.onclick=function(){
   var userArray=userInput.split(",");
   insert.elements[0].value=""; //clear form
   var action="";
+  var insertResult="";
   for(var i=0; i<userArray.length; i++){
-    action=action+tree.insert(Number(userArray[i]))+"<br>";
+    insertResult=tree.insert(Number(userArray[i]));
+    if(insertResult!=null){
+      action=action+insertResult+"<br>";
+    }
   }
   if(action!=null){
     lastAction.innerHTML=action;  //update last action paragraph
