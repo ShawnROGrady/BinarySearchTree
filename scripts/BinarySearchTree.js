@@ -15,13 +15,15 @@
   2. remove a value from the tree
   3. print the entire tree (inorder, preorder, or postorder)
   4. search the tree for a specified value
-  5. close the program
+  5. balance the tree
+  6. close the program
 
 +I currently believe I can:
   -insert values
   -print the tree inorder, preorder and postorder
   -search for a value
   -remove a value
+  -balance the tree
   -all from user input
 */
 
@@ -59,29 +61,39 @@ function bstNode(){
 //Binary search Tree
 function BST(){
   var root=bstNode();
+  var balancing=false;
 
   function doInsert(input){
-    var newNode=bstNode();
-    newNode.setValue(input);
-    if(root.value==null){
-      //list is empty
-      root=newNode;
-      alert(input+" was added to the tree as the root");
+    if(isNaN(input)){
+      if(balancing==false){
+        alert("only numeric values are allowed in the tree");
+      }
     }
     else{
-      var tmp=root;
-      var parent=root;
-      var search=doSearch(input);
-      if(search.found==true){
-        //value already in tree
-        alert(input + " is already in the tree");
+      var newNode=bstNode();
+      newNode.setValue(input);
+      if(root.value==null){
+        //list is empty
+        root=newNode;
+        if(balancing==false){
+          alert(input+" was added to the tree as the root");
+        }
       }
       else{
-        if(input<search.tmp.value){
-          leftInsert(newNode, search.tmp);
+        var tmp=root;
+        var parent=root;
+        var search=doSearch(input);
+        if(search.found==true){
+          //value already in tree
+          alert(input + " is already in the tree");
         }
         else{
-          rightInsert(newNode, search.tmp);
+          if(input<search.tmp.value){
+            return leftInsert(newNode, search.tmp);
+          }
+          else{
+            return rightInsert(newNode, search.tmp);
+          }
         }
       }
     }
@@ -89,12 +101,16 @@ function BST(){
   function leftInsert(newNode, parentNode){
     parentNode.setLeftChild(newNode);
     newNode.setParent(parentNode);
-    alert(newNode.value+" was added to the tree as the left child to "+ parentNode.value);
+    if(balancing==false){
+      alert(newNode.value+" was added to the tree as the left child to "+ parentNode.value);
+    }
   }
   function rightInsert(newNode, parentNode){
     parentNode.setRightChild(newNode);
     newNode.setParent(parentNode);
-    alert(newNode.value+" was added to the tree as the right child to "+ parentNode.value);
+    if(balancing==false){
+      alert(newNode.value+" was added to the tree as the right child to "+ parentNode.value);
+    }
   }
 
   function doSearch(input){
@@ -371,12 +387,81 @@ function BST(){
       alert("invalid input");
     }
   }
+  function balanceTree(){
+    if(root.value==null){
+      alert("tree is empty");
+    }
+    else{
+      var treeArray=[];
+      treeArray=getTreeArray(root, treeArray);
+      var treeSize=treeArray.length;  //number of elements in tree
+      if(treeSize>2){
+        var iteration=1;
+        root=bstNode(); //basically clears the tree
+        //doInsert(findMedian(treeArray, treeSize));  //insert median value as root
+        balancing=true; //tell tree we are balancing
+        doBalanceTree(treeArray, treeSize, iteration);
+        balancing=false; //reset to normal behavior
+        alert("tree was balanced");
+      }
+      else{
+        alert("tree must contain at least 3 values in order to balance");
+      }
+    }
+  }
+  function doBalanceTree(treeArray,treeSize, iteration){
+    //this function actually balances the tree
+    doInsert(findMedianValue(treeArray, treeSize));  //insert median value
+    if(treeSize>1){
+      var leftArray=treeArray.slice(0, findMedianIndex(treeSize));
+      var rightArray=treeArray.slice(findMedianIndex(treeSize)+1, treeSize);
+      doBalanceTree(leftArray, leftArray.length, iteration+1);
+      doBalanceTree(rightArray, rightArray.length, iteration+1);
+    }
+
+  }
+
+  function findMedianValue(treeArray, treeSize){
+    //finds median value of a given array
+    if(((treeSize-1)%2)!=0){
+      //even # of elements in tree
+      return treeArray[((treeSize-1)/2)+0.5];
+    }
+    else{
+      return treeArray[((treeSize-1)/2)];
+    }
+  }
+  function findMedianIndex(treeSize){
+    //just finds the index of the median value for an array
+    if(((treeSize-1)%2)!=0){
+      //even # of elements in tree
+      return ((treeSize-1)/2)+0.5;
+    }
+    else{
+      return ((treeSize-1)/2);
+    }
+  }
+
+  function getTreeArray(node, treeArray){
+    //this function pushes value of the tree into an array, using an inorder traversal
+    if(node.leftChild!=null){
+      treeArray=getTreeArray(node.leftChild, treeArray);
+    }
+    //alert(node.value);
+    treeArray.push(node.value);
+    //treeArray[treeArray.length]=node.value;
+    if(node.rightChild!=null){
+      treeArray=getTreeArray(node.rightChild, treeArray);
+    }
+    return treeArray;
+  }
   var treeAPI={
     insert:doInsert,
     print:printInorder,  //print in order by default
     changePrint:changePrint,
     search:doSearch,
-    remove:doRemove
+    remove:doRemove,
+    balance:balanceTree
   };
   return treeAPI;
 }
@@ -387,7 +472,7 @@ function BST(){
   var choice;
   var userInput
   do{
-    choice=prompt("What would you like to do? \r 1. insert a value to the tree \r 2. remove a value from the tree \r 3. print the tree \r 4. search the tree \r 5. terminate program");
+    choice=prompt("What would you like to do? \r 1. insert a value to the tree \r 2. remove a value from the tree \r 3. print the tree \r 4. search the tree \r 5. balance the tree \r 6. terminate program");
     if(choice==1){
       //insert value
       userInput=prompt("enter a value to add to the tree");
@@ -418,7 +503,11 @@ function BST(){
         }
       }
     }
-    else if(choice==5||choice==null){
+    else if(choice==5){
+      //balance the tree
+      tree.balance();
+    }
+    else if(choice==6||choice==null){
       //close program
       alert("thank you for using this program");
     }
@@ -427,7 +516,7 @@ function BST(){
       alert("please enter a valid choice");
 
     }
-  }while(choice!=5 && choice!=null);
+  }while(choice!=6 && choice!=null);
 
 })();
 /*
