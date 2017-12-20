@@ -14,6 +14,7 @@
           <li> Each value in the tree needs to be a <b>number</b>
           <ul>
             <li> Trying to add a non-number value like <q>hello</q> or <q>one</q> will trigger a pop-up
+            <li> Multiple numeric values can be added at once if separated by commas
           </ul>
           <li> Each value in the tree must be unique
             <ul>
@@ -29,6 +30,7 @@
                   <li> trying to search for a value or remove a value from an empty tree
                   <li> trying to print an empty tree
                   <li> trying to print the tree with out selecting a printing order
+                  <li> trying to balance a tree with less than 3 values
                 </ol>
               <li> Any of the above will trigger a pop-up
             </ul>
@@ -45,7 +47,8 @@
       </form>
       <form id="removeNode" action="">
         2. Remove a value from the tree<br>
-        <input type='text'><input type='button'  id='removeEnter' value='remove'>
+        <input type='text'><input type='button'  id='removeEnter' value='remove'><br>
+        <input type='button' id='removeAll' value='remove all'>
         <br><br>
       </form>
       <form id="printTree" action="">
@@ -63,11 +66,16 @@
         <br>
         <br>
       </form>
+      <form id="balanceTree" action="">
+        5. Balance the tree<br>
+        <input type='button' id='balanceEnter' value='balance'>
+        <br>
+        <br>
+      </form>
       <form id="terminateProgram" action="">
-        5. Terminate the program<br>
+        6. Terminate the program<br>
         <input type='button'  id='terminateEnter' value='Terminate'>
       </form>
-
       <!--object data="/images/test.pdf"></object-->
       <h3></h3>
       <p id="lastAction"></p>
@@ -84,6 +92,7 @@
         document.getElementById('printTree').style.display="none";
         document.getElementById('searchNode').style.display="none";
         document.getElementById('terminateProgram').style.display="none";
+        document.getElementById('balanceTree').style.display="none";
         //document.querySelector('object').style.display="none";
         //document.querySelector('h3').style.diplay="none";
         document.getElementById("myCanvas").style.display="none";

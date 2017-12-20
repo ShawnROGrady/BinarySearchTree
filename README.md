@@ -7,13 +7,14 @@ A binary search tree is actually pretty similar to a sorted linked list in many 
 
 For the sake of simplicity, I am only considering the case where all values in the tree are **numbers**.
 
-My end goal is to implement a binary search tree that takes user input to perform the following six functions:
+My end goal is to implement a binary search tree that takes user input to perform the following seven functions:
   1. insert a value to the tree
   2. remove a value from the tree
   3. print the entire tree (inorder, preorder, or postorder)
-  4. Draw the tree on a webpage
-  5. search the tree for a specified value
-  6. close the program
+  4. draw the tree on a webpage
+  5. balance the tree
+  6. search the tree for a specified value
+  7. close the program
 
 This program is intended for personal education, and I plan on updating it as I learn more concepts in JavaScript
 

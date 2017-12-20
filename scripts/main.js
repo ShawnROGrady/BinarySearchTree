@@ -6,7 +6,8 @@
     2. remove a value
     3. print the entire tree (inorder, preorder, or postorder)
     4. search the tree for a specific value
-    5. close the program
+    5. balance the tree
+    6. close the program
 */
 //using strict mode for safety
 "use strict";
@@ -19,11 +20,13 @@ var lastAction=document.getElementById("lastAction"); //paragraph diplaying last
 var startButton=document.getElementById('start');
 var insertButton=document.getElementById("insertEnter");
 var removeButton=document.getElementById("removeEnter");
+var removeAllButton=document.getElementById("removeAll");
 var searchButton=document.getElementById("searchEnter");
 var printButton=document.getElementById("printEnter");
 var terminateButton=document.getElementById("terminateEnter");
 var autoButton=document.getElementById('auto');
 var hideButton=document.getElementById("hide"); //button to hide tree drawing
+var balanceButton=document.getElementById('balanceTree');
 //canvas elements:
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
@@ -40,6 +43,7 @@ startButton.onclick=function(){
   document.getElementById('removeNode').style.display="block";
   document.getElementById('printTree').style.display="block";
   document.getElementById('searchNode').style.display="block";
+  document.getElementById('balanceTree').style.display="block";
   document.getElementById('terminateProgram').style.display="block";
   //create last action header+give starting state
   document.querySelector('h3').textContent="Last action:";
@@ -58,6 +62,7 @@ autoButton.onclick=function(){
   document.getElementById('removeNode').style.display="block";
   document.getElementById('printTree').style.display="block";
   document.getElementById('searchNode').style.display="block";
+  document.getElementById('balanceTree').style.display="block";
   document.getElementById('terminateProgram').style.display="block";
   //create last action header+give starting state
   document.querySelector('h3').textContent="Last action:";
@@ -70,10 +75,14 @@ autoButton.onclick=function(){
 insertButton.onclick=function(){
   var insert=document.getElementById('addNode');
   var userInput=insert.elements[0].value;
+  var userArray=userInput.split(",");
   insert.elements[0].value=""; //clear form
-  var action=tree.insert(Number(userInput));
+  var action="";
+  for(var i=0; i<userArray.length; i++){
+    action=action+tree.insert(Number(userArray[i]))+"<br>";
+  }
   if(action!=null){
-    lastAction.textContent=action;  //update last action paragraph
+    lastAction.innerHTML=action;  //update last action paragraph
   }
   if(auto){
     autoDraw();
@@ -87,6 +96,13 @@ removeButton.onclick=function(){
   if(action!=null){
     lastAction.textContent=action;  //update last action paragraph
   }
+  if(auto){
+    autoDraw();
+  }
+}
+removeAllButton.onclick=function(){
+  tree= BST();  //just reset the tree
+  lastAction.textContent="tree was reset";
   if(auto){
     autoDraw();
   }
@@ -174,6 +190,7 @@ terminateButton.onclick=function(){
   document.getElementById('searchNode').style.display="none";
   document.getElementById('terminateProgram').style.display="none";
   document.getElementById("hide").style.display="none";
+  document.getElementById('balanceTree').style.display="none";
   //hide last action field
   document.querySelector('h3').style.display="none";
   lastAction.style.display="none"
@@ -205,4 +222,14 @@ function autoDraw(){
   //alert(treeContents);
   ctx.clearRect(0, 0, 1000, 500); //clear prior canvas drawing
   eval(treeContents);
+}
+balanceButton.onclick=function(){
+  var action=tree.balance();
+  if(action!=null){
+    //balance was successful
+    lastAction.textContent=action;  //update last action paragraph
+  }
+  if(auto){
+    autoDraw();
+  }
 }
