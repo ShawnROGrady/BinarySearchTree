@@ -76,11 +76,12 @@ insertButton.onclick=function(){
   var userInput=insert.elements[0].value;
   var userArray=userInput.split(",");
   insert.elements[0].value=""; //clear form
+  var action="";
   for(var i=0; i<userArray.length; i++){
-    var action=tree.insert(Number(userArray[i]));
+    action=action+tree.insert(Number(userArray[i]))+"<br>";
   }
   if(action!=null){
-    lastAction.textContent=action;  //update last action paragraph
+    lastAction.innerHTML=action;  //update last action paragraph
   }
   if(auto){
     autoDraw();
