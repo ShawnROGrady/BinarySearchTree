@@ -448,12 +448,63 @@ export function BST(){
       alert("tree is empty");
     }
     else{
-      root=bstNode(); //basically clears the tree
       var treeArray=[];
       treeArray=getTreeArray(root, treeArray);
-      return "tree was balanced";
+      var treeSize=treeArray.length;  //number of elements in tree
+      if(treeSize>2){
+        var iteration=1;
+        root=bstNode(); //basically clears the tree
+        //doInsert(findMedian(treeArray, treeSize));  //insert median value as root
+        doBalanceTree(treeArray, treeSize, iteration);
+        return "tree was balanced";
+      }
+      else{
+        alert("tree must contain at least 3 values in order to balance");
+      }
     }
   }
+  function doBalanceTree(treeArray,treeSize, iteration){
+    //this function actually balances the tree
+    doInsert(findMedianValue(treeArray, treeSize));  //insert median value
+    /*
+    while(iteration<treeSize){
+      iteration=iteration+1;
+      doInsert(treeArray[((treeSize-1)/2)-(iteration)]);
+      doInsert(treeArray[((treeSize-1)/2)+(iteration)]);
+      //var newTreeArray=treeArray.slice(0, ((treeSize-1)/2)-1);
+      //doBalanceTree(treeArray, treeSize, iteration);
+    }
+    */
+    if(treeSize>1){
+      var leftArray=treeArray.slice(0, findMedianIndex(treeSize));
+      var rightArray=treeArray.slice(findMedianIndex(treeSize)+1, treeSize);
+      doBalanceTree(leftArray, leftArray.length, iteration+1);
+      doBalanceTree(rightArray, rightArray.length, iteration+1);
+    }
+
+  }
+
+  function findMedianValue(treeArray, treeSize){
+    //finds median value of a given array
+    if(((treeSize-1)%2)!=0){
+      //even # of elements in tree
+      return treeArray[((treeSize-1)/2)+0.5];
+    }
+    else{
+      return treeArray[((treeSize-1)/2)];
+    }
+  }
+  function findMedianIndex(treeSize){
+    //just finds the index of the median value for an array
+    if(((treeSize-1)%2)!=0){
+      //even # of elements in tree
+      return ((treeSize-1)/2)+0.5;
+    }
+    else{
+      return ((treeSize-1)/2);
+    }
+  }
+  /*
   function getTreeInfo(){
     //this funtion will return information about the tree needed to balance the tree
     if(root.value==null){
@@ -463,6 +514,7 @@ export function BST(){
       return treeArray;
     }
   }
+  */
   function getTreeArray(node, treeArray){
     //this function pushes value of the tree into an array, using an inorder traversal
     if(node.leftChild!=null){
