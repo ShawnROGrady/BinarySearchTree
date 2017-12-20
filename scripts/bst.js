@@ -32,10 +32,13 @@ function bstNode(){
 //Binary search Tree
 export function BST(){
   var root=bstNode();
+  var balancing=false;  //used to prevent unhelpful alerts when balancing tree
 
   function doInsert(input){
     if(isNaN(input)){
-      alert("only numeric values are allowed in the tree");
+      if(balancing==false){
+        alert("only numeric values are allowed in the tree");
+      }
     }
     else{
       var newNode=bstNode();
@@ -455,7 +458,9 @@ export function BST(){
         var iteration=1;
         root=bstNode(); //basically clears the tree
         //doInsert(findMedian(treeArray, treeSize));  //insert median value as root
+        balancing=true; //tell tree we are balancing
         doBalanceTree(treeArray, treeSize, iteration);
+        balancing=false; //reset to normal behavior
         return "tree was balanced";
       }
       else{
