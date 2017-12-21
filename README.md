@@ -1,5 +1,5 @@
 # BinarySearchTree
-Implementation a binary search tree in JavaScript
+Implementation of a binary search tree in JavaScript
 
 I am just starting to learn JavaScript and figured a good way to familarize myself with the new language was to make something similar to what I have made in the past with C++ (language I have the most experience with)
 
